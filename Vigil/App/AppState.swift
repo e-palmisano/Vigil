@@ -9,6 +9,7 @@ final class AppState: ObservableObject {
 
     let lockManager: LockManager
     let settings: AppSettings
+    let shortcutService: GlobalShortcutService
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -28,12 +29,24 @@ final class AppState: ObservableObject {
             settings: settings
         )
 
+        self.shortcutService = GlobalShortcutService(settings: settings)
+
         lockManager.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] newState in
                 self?.lockState = newState
             }
             .store(in: &cancellables)
+
+        registerShortcuts()
+    }
+
+    private func registerShortcuts() {
+        shortcutService.register(
+            onLockVisible: { [weak self] in self?.lockVisible() },
+            onLockObscured: { [weak self] in self?.lockObscured() },
+            onEmergencyUnlock: { [weak self] in self?.lockManager.emergencyUnlock() }
+        )
     }
 
     func lockVisible() {
