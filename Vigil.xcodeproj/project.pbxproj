@@ -7,15 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */; };
 		18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
 		3CF567297A751098EDC84345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */; };
 		52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDDCAEAE22B14BEA34D2694 /* LockState.swift */; };
+		56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */; };
 		592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */; };
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
+		882D342FEB94B1CBB8EDF6A2 /* MockInputBlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEEC7F2CE12E700646F678CF /* MockInputBlockingService.swift */; };
+		894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */; };
 		9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */; };
+		9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */; };
+		9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */; };
 		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
+		B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */; };
+		C6F2CC3324FFAB05224CD8AB /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6E15905C8636D95DA79A3A /* LockManager.swift */; };
 		D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */; };
+		DA5006211E4BFB903E8AE097 /* MockAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */; };
+		DCC0541256F53EE1A17B0BB2 /* MockSleepPreventionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,21 +43,32 @@
 		27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
 		4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStyle.swift; sourceTree = "<group>"; };
+		696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSleepPreventionService.swift; sourceTree = "<group>"; };
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
 		8A364D7F5C528612731088E3 /* VIGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGApp.swift; sourceTree = "<group>"; };
 		912FD6BD1C509153ABF121C3 /* VIGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VIGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceProtocol.swift; sourceTree = "<group>"; };
 		B85D36572956AF65600CE196 /* Vigil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vigil.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationService.swift; sourceTree = "<group>"; };
+		C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerTests.swift; sourceTree = "<group>"; };
 		CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgePosition.swift; sourceTree = "<group>"; };
 		D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
+		DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerServiceProtocol.swift; sourceTree = "<group>"; };
 		E07CD5E07408D958348EFD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDisplayManagerService.swift; sourceTree = "<group>"; };
+		F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceProtocol.swift; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
 		F7F6D6CCC79559C870F798A2 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepPreventionServiceProtocol.swift; sourceTree = "<group>"; };
+		FD6E15905C8636D95DA79A3A /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
+		FEEC7F2CE12E700646F678CF /* MockInputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockInputBlockingService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		1BD63CE8560CDF0EAB970434 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				D0E8AEDC42204484A07A8E7C /* Lock */,
 				FBA6322E9F9D60E2A88DE0BF /* Overlay */,
 			);
 			path = Features;
@@ -57,9 +78,30 @@
 			isa = PBXGroup;
 			children = (
 				D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */,
+				C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */,
 				F53369881300B79D5865BBEE /* VIGTests.swift */,
+				465E22A3BC940C27670D1C08 /* Mocks */,
 			);
 			path = VIGTests;
+			sourceTree = "<group>";
+		};
+		465E22A3BC940C27670D1C08 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */,
+				E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */,
+				FEEC7F2CE12E700646F678CF /* MockInputBlockingService.swift */,
+				696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		47C3AC6150A6F96DB2279671 /* InputBlocking */ = {
+			isa = PBXGroup;
+			children = (
+				F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */,
+			);
+			path = InputBlocking;
 			sourceTree = "<group>";
 		};
 		4A659D3912540E80695152E7 /* Models */ = {
@@ -84,6 +126,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		81ED5F54E59304974B3AAD30 /* SleepPrevention */ = {
+			isa = PBXGroup;
+			children = (
+				FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */,
+			);
+			path = SleepPrevention;
+			sourceTree = "<group>";
+		};
 		992B83762E2C36747F2A9A79 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +150,22 @@
 				446B7538353C7ECA4005A068 /* VIGTests */,
 				992B83762E2C36747F2A9A79 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		C18DDF856543E2805AE09295 /* DisplayManager */ = {
+			isa = PBXGroup;
+			children = (
+				DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */,
+			);
+			path = DisplayManager;
+			sourceTree = "<group>";
+		};
+		D0E8AEDC42204484A07A8E7C /* Lock */ = {
+			isa = PBXGroup;
+			children = (
+				FD6E15905C8636D95DA79A3A /* LockManager.swift */,
+			);
+			path = Lock;
 			sourceTree = "<group>";
 		};
 		D558645DED43326B339E8444 /* Vigil */ = {
@@ -122,9 +188,21 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		E89845744567BB185C5C8DC3 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		F142837B93EF7E5ECFD5769C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E89845744567BB185C5C8DC3 /* Authentication */,
+				C18DDF856543E2805AE09295 /* DisplayManager */,
+				47C3AC6150A6F96DB2279671 /* InputBlocking */,
+				81ED5F54E59304974B3AAD30 /* SleepPrevention */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -229,10 +307,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */,
+				9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */,
 				18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */,
+				0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */,
+				B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */,
+				C6F2CC3324FFAB05224CD8AB /* LockManager.swift in Sources */,
 				9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */,
 				52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */,
 				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
+				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,6 +325,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */,
+				56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */,
+				DA5006211E4BFB903E8AE097 /* MockAuthenticationService.swift in Sources */,
+				894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */,
+				882D342FEB94B1CBB8EDF6A2 /* MockInputBlockingService.swift in Sources */,
+				DCC0541256F53EE1A17B0BB2 /* MockSleepPreventionService.swift in Sources */,
 				71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
