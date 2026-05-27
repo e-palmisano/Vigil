@@ -73,6 +73,7 @@ final class LockManager: ObservableObject {
             displayManagerService.createOverlayWindows(
                 style: settings.currentOverlayStyle,
                 mode: mode,
+                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
                 onUnlock: { [weak self] in
                     Task { @MainActor [weak self] in await self?.unlock() }
                 }
@@ -112,6 +113,7 @@ final class LockManager: ObservableObject {
             displayManagerService.createOverlayWindows(
                 style: settings.currentOverlayStyle,
                 mode: mode,
+                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
                 onUnlock: { [weak self] in
                     Task { @MainActor [weak self] in await self?.unlock() }
                 }

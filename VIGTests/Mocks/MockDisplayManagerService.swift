@@ -8,11 +8,13 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
     var lastStyle: OverlayStyle?
     var lastMode: LockMode?
     var capturedOnUnlock: (() -> Void)?
+    var lastIsTouchIDAvailable: Bool?
 
-    func createOverlayWindows(style: OverlayStyle, mode: LockMode, onUnlock: @escaping () -> Void) {
+    func createOverlayWindows(style: OverlayStyle, mode: LockMode, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
         createCallCount += 1
         lastStyle = style
         lastMode = mode
+        lastIsTouchIDAvailable = isTouchIDAvailable
         capturedOnUnlock = onUnlock
         hasOverlays = true
     }

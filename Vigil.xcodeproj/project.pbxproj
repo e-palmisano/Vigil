@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */; };
+		1741FEAF77971DB08809B891 /* OverlayContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */; };
 		18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */; };
 		2B528987611A8F2B5C25BB72 /* BlueGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */; };
 		2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C10E149EC545E37E5171BD /* OverlayWindow.swift */; };
@@ -21,6 +22,8 @@
 		592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */; };
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
 		769681F195B85477D83301F2 /* BlurredSnapshotBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */; };
+		79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */; };
+		7CF3F0547C7F2314A5284C68 /* LockBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084827B54EF977EBD8B80524 /* LockBadgeView.swift */; };
 		81BD78667B56238732983CBB /* DarkDimmedBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F6FE4ED4521C6231A9456 /* DarkDimmedBackground.swift */; };
 		882D342FEB94B1CBB8EDF6A2 /* MockInputBlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEEC7F2CE12E700646F678CF /* MockInputBlockingService.swift */; };
 		894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */; };
@@ -30,10 +33,12 @@
 		9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */; };
 		9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */; };
 		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
+		B891A185E37C88BFCDCA38B4 /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21D2DEF2214C0236DE61D64 /* ClockView.swift */; };
 		B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */; };
 		BCD8883A2B9A7C40797E419E /* SleepPreventionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E496ABBFAF3FDF3A7BBE9340 /* SleepPreventionServiceTests.swift */; };
 		BE83F4605CAB8CA33514FEB6 /* InputBlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */; };
 		C6F2CC3324FFAB05224CD8AB /* LockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD6E15905C8636D95DA79A3A /* LockManager.swift */; };
+		CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */; };
 		D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */; };
 		D7C47CA692B74D7D01CDAB74 /* AuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61602E7400D557301612069 /* AuthenticationServiceTests.swift */; };
 		DA5006211E4BFB903E8AE097 /* MockAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */; };
@@ -54,19 +59,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		084827B54EF977EBD8B80524 /* LockBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockBadgeView.swift; sourceTree = "<group>"; };
 		0FDDCAEAE22B14BEA34D2694 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
 		1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerServiceTests.swift; sourceTree = "<group>"; };
 		231D4914B8C945B8C77D493E /* MinimalBlackBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimalBlackBackground.swift; sourceTree = "<group>"; };
 		27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
+		36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockButton.swift; sourceTree = "<group>"; };
 		3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueGradientBackground.swift; sourceTree = "<group>"; };
 		48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingService.swift; sourceTree = "<group>"; };
+		4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadge.swift; sourceTree = "<group>"; };
 		4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStyle.swift; sourceTree = "<group>"; };
 		696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSleepPreventionService.swift; sourceTree = "<group>"; };
 		7E5459B50B1CC3253CD69EC6 /* GraphiteGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphiteGradientBackground.swift; sourceTree = "<group>"; };
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
 		8A364D7F5C528612731088E3 /* VIGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGApp.swift; sourceTree = "<group>"; };
 		912FD6BD1C509153ABF121C3 /* VIGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VIGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayContentView.swift; sourceTree = "<group>"; };
 		952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerService.swift; sourceTree = "<group>"; };
 		A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredSnapshotBackground.swift; sourceTree = "<group>"; };
 		B19943A738D6CFE770F75E12 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -85,6 +94,7 @@
 		E0B24AB2B19024480B0170E4 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		E496ABBFAF3FDF3A7BBE9340 /* SleepPreventionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepPreventionServiceTests.swift; sourceTree = "<group>"; };
 		E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDisplayManagerService.swift; sourceTree = "<group>"; };
+		F21D2DEF2214C0236DE61D64 /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceProtocol.swift; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
 		F5C10E149EC545E37E5171BD /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
@@ -261,7 +271,12 @@
 		FBA6322E9F9D60E2A88DE0BF /* Overlay */ = {
 			isa = PBXGroup;
 			children = (
+				F21D2DEF2214C0236DE61D64 /* ClockView.swift */,
+				084827B54EF977EBD8B80524 /* LockBadgeView.swift */,
+				935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */,
 				F5C10E149EC545E37E5171BD /* OverlayWindow.swift */,
+				36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */,
+				4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */,
 				01EA2E3505B33036EF402E2E /* Backgrounds */,
 			);
 			path = Overlay;
@@ -366,21 +381,26 @@
 				18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */,
 				2B528987611A8F2B5C25BB72 /* BlueGradientBackground.swift in Sources */,
 				769681F195B85477D83301F2 /* BlurredSnapshotBackground.swift in Sources */,
+				B891A185E37C88BFCDCA38B4 /* ClockView.swift in Sources */,
 				81BD78667B56238732983CBB /* DarkDimmedBackground.swift in Sources */,
 				9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */,
 				0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */,
 				E8B6B71FB048B8CAFDD0B2C6 /* GraphiteGradientBackground.swift in Sources */,
 				BE83F4605CAB8CA33514FEB6 /* InputBlockingService.swift in Sources */,
 				B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */,
+				7CF3F0547C7F2314A5284C68 /* LockBadgeView.swift in Sources */,
 				C6F2CC3324FFAB05224CD8AB /* LockManager.swift in Sources */,
 				9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */,
 				52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */,
 				93E2507713BCD7E6DACCFEFE /* MinimalBlackBackground.swift in Sources */,
+				1741FEAF77971DB08809B891 /* OverlayContentView.swift in Sources */,
 				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
 				2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */,
 				F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
+				CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
+				79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

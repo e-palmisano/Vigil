@@ -9,13 +9,15 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
     private var overlayWindows: [OverlayWindow] = []
     private var currentStyle: OverlayStyle = .darkDimmed
     private var currentMode: LockMode = .obscured
+    private var isTouchIDAvailable: Bool = false
     private var onUnlockCallback: (() -> Void)?
     private var screenChangeObserver: NSObjectProtocol?
 
-    func createOverlayWindows(style: OverlayStyle, mode: LockMode, onUnlock: @escaping () -> Void) {
+    func createOverlayWindows(style: OverlayStyle, mode: LockMode, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
         removeAllOverlayWindows()
         currentStyle = style
         currentMode = mode
+        self.isTouchIDAvailable = isTouchIDAvailable
         onUnlockCallback = onUnlock
 
         buildWindows()
@@ -51,7 +53,11 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
     }
 
     private func overlayContent(for style: OverlayStyle) -> some View {
-        OverlayPlaceholderView(style: style, onUnlock: onUnlockCallback ?? {})
+        OverlayContentView(
+            style: style,
+            isTouchIDAvailable: isTouchIDAvailable,
+            onUnlock: onUnlockCallback ?? {}
+        )
     }
 
     private func observeScreenChanges() {
@@ -76,31 +82,8 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         let callback = onUnlockCallback ?? {}
         let style = currentStyle
         let mode = currentMode
+        let touchID = isTouchIDAvailable
         removeAllOverlayWindows()
-        createOverlayWindows(style: style, mode: mode, onUnlock: callback)
-    }
-}
-
-// Placeholder view used until Task 9 builds the full overlay UI.
-private struct OverlayPlaceholderView: View {
-    let style: OverlayStyle
-    let onUnlock: () -> Void
-
-    var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-            VStack(spacing: 24) {
-                Image(systemName: "lock.fill")
-                    .font(.system(size: 64))
-                    .foregroundStyle(.white)
-                Button("Unlock", action: onUnlock)
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 12)
-                    .background(.white.opacity(0.15))
-                    .clipShape(Capsule())
-            }
-        }
+        createOverlayWindows(style: style, mode: mode, isTouchIDAvailable: touchID, onUnlock: callback)
     }
 }
