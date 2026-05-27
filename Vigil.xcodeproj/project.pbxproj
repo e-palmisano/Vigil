@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */; };
 		18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */; };
+		2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C10E149EC545E37E5171BD /* OverlayWindow.swift */; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
+		37760284D5F61566B6CDC204 /* DisplayManagerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */; };
 		3CF567297A751098EDC84345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */; };
 		52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDDCAEAE22B14BEA34D2694 /* LockState.swift */; };
 		56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */; };
@@ -19,6 +21,7 @@
 		894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */; };
 		9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */; };
 		9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */; };
+		9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */; };
 		9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */; };
 		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
 		B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */; };
@@ -42,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		0FDDCAEAE22B14BEA34D2694 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
+		1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerServiceTests.swift; sourceTree = "<group>"; };
 		27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
 		48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingService.swift; sourceTree = "<group>"; };
@@ -50,6 +54,7 @@
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
 		8A364D7F5C528612731088E3 /* VIGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGApp.swift; sourceTree = "<group>"; };
 		912FD6BD1C509153ABF121C3 /* VIGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VIGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerService.swift; sourceTree = "<group>"; };
 		B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceProtocol.swift; sourceTree = "<group>"; };
 		B85D36572956AF65600CE196 /* Vigil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vigil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationService.swift; sourceTree = "<group>"; };
@@ -62,6 +67,7 @@
 		E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDisplayManagerService.swift; sourceTree = "<group>"; };
 		F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceProtocol.swift; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
+		F5C10E149EC545E37E5171BD /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		F7F6D6CCC79559C870F798A2 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepPreventionServiceProtocol.swift; sourceTree = "<group>"; };
 		FD6E15905C8636D95DA79A3A /* LockManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManager.swift; sourceTree = "<group>"; };
@@ -82,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */,
+				1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */,
 				C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */,
 				C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */,
 				F53369881300B79D5865BBEE /* VIGTests.swift */,
@@ -161,6 +168,7 @@
 		C18DDF856543E2805AE09295 /* DisplayManager */ = {
 			isa = PBXGroup;
 			children = (
+				952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */,
 				DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */,
 			);
 			path = DisplayManager;
@@ -216,6 +224,7 @@
 		FBA6322E9F9D60E2A88DE0BF /* Overlay */ = {
 			isa = PBXGroup;
 			children = (
+				F5C10E149EC545E37E5171BD /* OverlayWindow.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -315,6 +324,7 @@
 				ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */,
 				9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */,
 				18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */,
+				9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */,
 				0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */,
 				BE83F4605CAB8CA33514FEB6 /* InputBlockingService.swift in Sources */,
 				B998B5C9BB4FEE2021D89594 /* InputBlockingServiceProtocol.swift in Sources */,
@@ -322,6 +332,7 @@
 				9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */,
 				52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */,
 				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
+				2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 			);
@@ -332,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */,
+				37760284D5F61566B6CDC204 /* DisplayManagerServiceTests.swift in Sources */,
 				DEB4EB8F6A0F5BFEE38B4871 /* InputBlockingServiceTests.swift in Sources */,
 				56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */,
 				DA5006211E4BFB903E8AE097 /* MockAuthenticationService.swift in Sources */,
