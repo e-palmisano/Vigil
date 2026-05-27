@@ -50,6 +50,7 @@
 		DCC0541256F53EE1A17B0BB2 /* MockSleepPreventionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */; };
 		DEB4EB8F6A0F5BFEE38B4871 /* InputBlockingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */; };
 		E8B6B71FB048B8CAFDD0B2C6 /* GraphiteGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5459B50B1CC3253CD69EC6 /* GraphiteGradientBackground.swift */; };
+		E8BE82E0FD40D8742439931B /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */; };
 		F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF769E1CA500EF65DB42AD8 /* SleepPreventionService.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadge.swift; sourceTree = "<group>"; };
 		4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStyle.swift; sourceTree = "<group>"; };
 		696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSleepPreventionService.swift; sourceTree = "<group>"; };
+		6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
 		7E5459B50B1CC3253CD69EC6 /* GraphiteGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphiteGradientBackground.swift; sourceTree = "<group>"; };
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
 		8A0EFBD1EA01873FE6A9B183 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */,
 				C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */,
 				C94BFE2DE574DCA63CD6555A /* MenuBarViewTests.swift */,
+				6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */,
 				E496ABBFAF3FDF3A7BBE9340 /* SleepPreventionServiceTests.swift */,
 				F53369881300B79D5865BBEE /* VIGTests.swift */,
 				465E22A3BC940C27670D1C08 /* Mocks */,
@@ -453,6 +456,7 @@
 				894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */,
 				882D342FEB94B1CBB8EDF6A2 /* MockInputBlockingService.swift in Sources */,
 				DCC0541256F53EE1A17B0BB2 /* MockSleepPreventionService.swift in Sources */,
+				E8BE82E0FD40D8742439931B /* SettingsViewTests.swift in Sources */,
 				BCD8883A2B9A7C40797E419E /* SleepPreventionServiceTests.swift in Sources */,
 				71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */,
 			);
