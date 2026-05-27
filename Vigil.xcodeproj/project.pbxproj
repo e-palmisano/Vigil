@@ -39,6 +39,7 @@
 		9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */; };
 		9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */; };
 		9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */; };
+		9EA1907293DA3AD330541E8C /* LockUnlockIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF449331A6C02029567B661 /* LockUnlockIntegrationTests.swift */; };
 		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
 		B1BE8F60165A113DFB791B0A /* CrashRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD071DB940327D21DAE5FCDF /* CrashRecoveryTests.swift */; };
 		B891A185E37C88BFCDCA38B4 /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21D2DEF2214C0236DE61D64 /* ClockView.swift */; };
@@ -113,6 +114,7 @@
 		E496ABBFAF3FDF3A7BBE9340 /* SleepPreventionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepPreventionServiceTests.swift; sourceTree = "<group>"; };
 		E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDisplayManagerService.swift; sourceTree = "<group>"; };
 		EAF0236FC996BD9F14F9C653 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		ECF449331A6C02029567B661 /* LockUnlockIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockUnlockIntegrationTests.swift; sourceTree = "<group>"; };
 		F21D2DEF2214C0236DE61D64 /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceProtocol.swift; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				9E7ED5828635EF057ECE79EF /* GlobalShortcutServiceTests.swift */,
 				C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */,
 				C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */,
+				ECF449331A6C02029567B661 /* LockUnlockIntegrationTests.swift */,
 				C94BFE2DE574DCA63CD6555A /* MenuBarViewTests.swift */,
 				6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */,
 				E496ABBFAF3FDF3A7BBE9340 /* SleepPreventionServiceTests.swift */,
@@ -474,6 +477,7 @@
 				7A4A9B19455F964BF4580DB3 /* GlobalShortcutServiceTests.swift in Sources */,
 				DEB4EB8F6A0F5BFEE38B4871 /* InputBlockingServiceTests.swift in Sources */,
 				56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */,
+				9EA1907293DA3AD330541E8C /* LockUnlockIntegrationTests.swift in Sources */,
 				2D9E363B26FBBCD9BE8FEBAA /* MenuBarViewTests.swift in Sources */,
 				DA5006211E4BFB903E8AE097 /* MockAuthenticationService.swift in Sources */,
 				894DAAEBF744E7596F065A5F /* MockDisplayManagerService.swift in Sources */,
