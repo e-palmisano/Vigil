@@ -39,6 +39,13 @@ final class AppState: ObservableObject {
             .store(in: &cancellables)
 
         registerShortcuts()
+        recoverLockStateIfNeeded()
+    }
+
+    private func recoverLockStateIfNeeded() {
+        guard settings.wasLockedOnExit else { return }
+        let mode = LockMode(rawValue: settings.lockModeOnExit) ?? .obscured
+        Task { try? await lockManager.lock(mode: mode) }
     }
 
     private func registerShortcuts() {
