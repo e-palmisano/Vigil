@@ -7,9 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
 		3CF567297A751098EDC84345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */; };
+		52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FDDCAEAE22B14BEA34D2694 /* LockState.swift */; };
+		592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */; };
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
+		9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */; };
+		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
+		D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,13 +29,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0FDDCAEAE22B14BEA34D2694 /* LockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockState.swift; sourceTree = "<group>"; };
 		27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
+		4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStyle.swift; sourceTree = "<group>"; };
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
 		8A364D7F5C528612731088E3 /* VIGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGApp.swift; sourceTree = "<group>"; };
 		912FD6BD1C509153ABF121C3 /* VIGTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VIGTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B85D36572956AF65600CE196 /* Vigil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vigil.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgePosition.swift; sourceTree = "<group>"; };
+		D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelTests.swift; sourceTree = "<group>"; };
 		E07CD5E07408D958348EFD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
+		F7F6D6CCC79559C870F798A2 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -44,9 +56,22 @@
 		446B7538353C7ECA4005A068 /* VIGTests */ = {
 			isa = PBXGroup;
 			children = (
+				D68B68FC8C319FC1A4BEE3BF /* DataModelTests.swift */,
 				F53369881300B79D5865BBEE /* VIGTests.swift */,
 			);
 			path = VIGTests;
+			sourceTree = "<group>";
+		};
+		4A659D3912540E80695152E7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F7F6D6CCC79559C870F798A2 /* AppSettings.swift */,
+				CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */,
+				27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */,
+				0FDDCAEAE22B14BEA34D2694 /* LockState.swift */,
+				4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		54EF67625E12CC5BF692B224 /* Resources */ = {
@@ -82,6 +107,7 @@
 			children = (
 				E13625EA1478DFCAD6D22579 /* App */,
 				1BD63CE8560CDF0EAB970434 /* Features */,
+				4A659D3912540E80695152E7 /* Models */,
 				54EF67625E12CC5BF692B224 /* Resources */,
 				F142837B93EF7E5ECFD5769C /* Services */,
 			);
@@ -202,6 +228,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */,
+				18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */,
+				9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */,
+				52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */,
+				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -210,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01BB3E4EF9F5E909D0B9DD3 /* DataModelTests.swift in Sources */,
 				71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,6 +262,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -313,6 +346,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
