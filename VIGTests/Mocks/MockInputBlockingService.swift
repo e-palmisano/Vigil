@@ -22,4 +22,8 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
 
     func checkAccessibilityPermission() -> Bool { permissionGranted }
     func requestAccessibilityPermission() {}
+
+    func simulateEventTapDisabled() {
+        onEventTapDisabled?()
+    }
 }
