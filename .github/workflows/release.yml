@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install xcodegen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Archive
+        run: make archive
+        env:
+          DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
+
+      - name: Export
+        run: make export
+
+      - name: Build DMG
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          make dmg VERSION=$VERSION
+
+      - name: Notarize
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          make notarize VERSION=$VERSION
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/Vigil-*.dmg
+          generate_release_notes: true
