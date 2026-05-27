@@ -31,6 +31,8 @@ struct OverlayContentView: View {
                     .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
                     .padding(.bottom, 60)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Vigil lock screen")
         }
         .onContinuousHover { phase in
             switch phase {
