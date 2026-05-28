@@ -7,9 +7,19 @@ final class MockAuthenticationService: AuthenticationServiceProtocol {
     var shouldThrow: Error?
     var callCount: Int = 0
 
+    var biometricsResult: Bool = true
+    var shouldThrowBiometrics: Error?
+    var biometricsOnlyCallCount: Int = 0
+
     func authenticate(reason: String) async throws -> Bool {
         callCount += 1
         if let error = shouldThrow { throw error }
         return authResult
+    }
+
+    func authenticateBiometricsOnly(reason: String) async throws -> Bool {
+        biometricsOnlyCallCount += 1
+        if let error = shouldThrowBiometrics { throw error }
+        return biometricsResult
     }
 }

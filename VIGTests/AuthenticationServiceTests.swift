@@ -36,4 +36,25 @@ final class AuthenticationServiceTests: XCTestCase {
         svc.isTouchIDAvailable = false
         XCTAssertFalse(svc.isTouchIDAvailable)
     }
+
+    @MainActor
+    func testBiometricsOnlyCallsCorrectPolicy() async throws {
+        let mock = MockAuthenticationService()
+        mock.biometricsResult = true
+        let result = try await mock.authenticateBiometricsOnly(reason: "test")
+        XCTAssertTrue(result)
+        XCTAssertEqual(mock.biometricsOnlyCallCount, 1)
+    }
+
+    @MainActor
+    func testBiometricsOnlyPropagatesThrow() async {
+        let mock = MockAuthenticationService()
+        mock.shouldThrowBiometrics = AuthenticationError.notAvailable
+        do {
+            _ = try await mock.authenticateBiometricsOnly(reason: "test")
+            XCTFail("Expected throw")
+        } catch {
+            XCTAssertEqual(mock.biometricsOnlyCallCount, 1)
+        }
+    }
 }
