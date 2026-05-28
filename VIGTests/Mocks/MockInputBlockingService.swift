@@ -11,7 +11,10 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
     var permissionGranted: Bool = true
     var storedShortcut: String?
 
-    func startBlocking() throws {
+    var lastBlockingMode: LockMode?
+
+    func startBlocking(mode: LockMode) throws {
+        lastBlockingMode = mode
         startCallCount += 1
         if let error = shouldThrow { throw error }
         isBlocking = true

@@ -19,16 +19,25 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     // Passthrough marker: Vigil's own synthetic events carry this so the tap lets them through.
     static let vigilSourceUserData: Int64 = 0x5649474C // "VIGL"
 
-    private static let blockedEventMask: CGEventMask = {
-        let types: [CGEventType] = [
-            .keyDown, .keyUp, .flagsChanged,
+    private static func eventMask(for mode: LockMode) -> CGEventMask {
+        let keyboardTypes: [CGEventType] = [.keyDown, .keyUp, .flagsChanged]
+        let mouseTypes: [CGEventType] = [
             .leftMouseDown, .leftMouseUp, .leftMouseDragged,
             .rightMouseDown, .rightMouseUp, .rightMouseDragged,
             .otherMouseDown, .otherMouseUp, .otherMouseDragged,
-            .mouseMoved, .scrollWheel
+            .mouseMoved
         ]
-        return types.reduce(0) { $0 | (1 << $1.rawValue) }
-    }()
+        let scrollTypes: [CGEventType] = [.scrollWheel]
+
+        let types: [CGEventType]
+        switch mode {
+        case .obscured:
+            types = keyboardTypes + mouseTypes + scrollTypes
+        case .visible:
+            types = keyboardTypes + scrollTypes
+        }
+        return types.reduce(CGEventMask(0)) { $0 | (CGEventMask(1) << $1.rawValue) }
+    }
 
     func checkAccessibilityPermission() -> Bool {
         AXIsProcessTrusted()
@@ -43,7 +52,7 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         unlockShortcut = shortcutString.flatMap { ParsedShortcut($0) }
     }
 
-    func startBlocking() throws {
+    func startBlocking(mode: LockMode = .obscured) throws {
         guard eventTap == nil else { return }
 
         let selfPtr = Unmanaged.passRetained(self).toOpaque()
@@ -53,7 +62,7 @@ final class InputBlockingService: InputBlockingServiceProtocol {
             tap: .cghidEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,
-            eventsOfInterest: Self.blockedEventMask,
+            eventsOfInterest: Self.eventMask(for: mode),
             callback: { _, type, event, userInfo -> Unmanaged<CGEvent>? in
                 guard let ptr = userInfo else { return Unmanaged.passRetained(event) }
                 let service = Unmanaged<InputBlockingService>.fromOpaque(ptr).takeUnretainedValue()

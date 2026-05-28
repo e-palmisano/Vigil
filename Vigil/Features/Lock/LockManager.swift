@@ -63,7 +63,7 @@ final class LockManager: ObservableObject {
         state = .locking
 
         do {
-            try inputBlockingService.startBlocking()
+            try inputBlockingService.startBlocking(mode: mode)
         } catch {
             state = .unlocked
             throw error

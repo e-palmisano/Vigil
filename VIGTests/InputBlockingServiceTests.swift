@@ -5,13 +5,13 @@ final class InputBlockingServiceTests: XCTestCase {
 
     func testMockStartBlockingSetsIsBlocking() throws {
         let svc = MockInputBlockingService()
-        try svc.startBlocking()
+        try svc.startBlocking(mode: .obscured)
         XCTAssertTrue(svc.isBlocking)
     }
 
     func testMockStopBlockingClearsIsBlocking() throws {
         let svc = MockInputBlockingService()
-        try svc.startBlocking()
+        try svc.startBlocking(mode: .obscured)
         svc.stopBlocking()
         XCTAssertFalse(svc.isBlocking)
     }
@@ -19,7 +19,7 @@ final class InputBlockingServiceTests: XCTestCase {
     func testMockThrowsWhenConfigured() {
         let svc = MockInputBlockingService()
         svc.shouldThrow = InputBlockingError.eventTapCreationFailed
-        XCTAssertThrowsError(try svc.startBlocking())
+        XCTAssertThrowsError(try svc.startBlocking(mode: .obscured))
     }
 
     func testMockPermissionDeniedThrows() {
@@ -30,11 +30,18 @@ final class InputBlockingServiceTests: XCTestCase {
 
     func testMockOnEventTapDisabledCallback() throws {
         let svc = MockInputBlockingService()
-        try svc.startBlocking()
+        try svc.startBlocking(mode: .obscured)
         var callbackFired = false
         svc.onEventTapDisabled = { callbackFired = true }
         svc.simulateEventTapDisabled()
         XCTAssertTrue(callbackFired)
+    }
+
+    func testMockVisibleModeDoesNotBlockMouse() throws {
+        let svc = MockInputBlockingService()
+        try svc.startBlocking(mode: .visible)
+        XCTAssertTrue(svc.isBlocking)
+        XCTAssertEqual(svc.lastBlockingMode, .visible)
     }
 
     @MainActor
