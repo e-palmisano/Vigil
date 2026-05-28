@@ -10,6 +10,7 @@ final class InputBlockingService: InputBlockingServiceProtocol {
 
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
+    private var tapRunLoop: CFRunLoop?
     private var watchdog: DispatchSourceTimer?
     private var watchdogFailures: Int = 0
     private var retainedSelfPointer: UnsafeMutableRawPointer?
@@ -97,11 +98,19 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         }
 
         let source = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0)
-        CFRunLoopAddSource(CFRunLoopGetMain(), source, .commonModes)
-        CGEvent.tapEnable(tap: tap, enable: true)
+        self.eventTap = tap
+        self.runLoopSource = source
 
-        eventTap = tap
-        runLoopSource = source
+        let tapQueue = DispatchQueue(label: "vig.inputblocking", qos: .userInteractive)
+        tapQueue.async { [weak self] in
+            guard let self, let source = self.runLoopSource, let tap = self.eventTap else { return }
+            let rl = CFRunLoopGetCurrent()
+            self.tapRunLoop = rl
+            CFRunLoopAddSource(rl, source, .commonModes)
+            CGEvent.tapEnable(tap: tap, enable: true)
+            CFRunLoopRun()
+        }
+
         isBlocking = true
         watchdogFailures = 0
         startWatchdog()
@@ -111,9 +120,17 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         stopWatchdog()
         if let tap = eventTap {
             CGEvent.tapEnable(tap: tap, enable: false)
-            if let source = runLoopSource {
+        }
+        if let source = runLoopSource {
+            if let rl = tapRunLoop {
+                CFRunLoopRemoveSource(rl, source, .commonModes)
+            } else {
                 CFRunLoopRemoveSource(CFRunLoopGetMain(), source, .commonModes)
             }
+        }
+        if let rl = tapRunLoop {
+            CFRunLoopStop(rl)
+            tapRunLoop = nil
         }
         if let ptr = retainedSelfPointer {
             Unmanaged<InputBlockingService>.fromOpaque(ptr).release()

@@ -18,13 +18,12 @@ final class GlobalShortcutService {
     ) {
         unregister()
 
-        let bindings: [(String, () -> Void)] = [
+        // Regular shortcuts — instant
+        let shortcuts: [(String, () -> Void)] = [
             (settings.globalShortcutVisible, onLockVisible),
-            (settings.globalShortcutObscured, onLockObscured),
-            (settings.emergencyShortcut, onEmergencyUnlock)
+            (settings.globalShortcutObscured, onLockObscured)
         ]
-
-        for (shortcutString, handler) in bindings {
+        for (shortcutString, handler) in shortcuts {
             guard let parsed = ParsedShortcut(shortcutString) else { continue }
             let monitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
                 if parsed.matches(event) {
@@ -33,6 +32,31 @@ final class GlobalShortcutService {
             }
             if let monitor { monitors.append(monitor) }
         }
+
+        // Emergency unlock — 3-second hold required
+        if let emergency = ParsedShortcut(settings.emergencyShortcut) {
+            setupEmergencyHold(parsed: emergency, handler: onEmergencyUnlock)
+        }
+    }
+
+    private func setupEmergencyHold(parsed: ParsedShortcut, handler: @escaping () -> Void) {
+        var holdTimer: Timer?
+
+        let down = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
+            if parsed.matches(event) {
+                holdTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
+                    DispatchQueue.main.async { handler() }
+                }
+            }
+        }
+        if let down { monitors.append(down) }
+
+        // Cancel hold on any key-up or modifier change
+        let up = NSEvent.addGlobalMonitorForEvents(matching: [.keyUp, .flagsChanged]) { _ in
+            holdTimer?.invalidate()
+            holdTimer = nil
+        }
+        if let up { monitors.append(up) }
     }
 
     func unregister() {

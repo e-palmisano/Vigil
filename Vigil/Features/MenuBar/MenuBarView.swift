@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MenuBarView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -62,8 +63,7 @@ struct MenuBarView: View {
     private var appActionsSection: some View {
         VStack(alignment: .leading, spacing: 2) {
             menuButton(title: "Settings…", icon: "gear", shortcut: "⌘,", disabled: false) {
-                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-                NSApp.activate(ignoringOtherApps: true)
+                openSettings()
             }
             menuButton(title: "Quit Vigil", icon: "power", shortcut: "⌘Q", disabled: false) {
                 NSApp.terminate(nil)
