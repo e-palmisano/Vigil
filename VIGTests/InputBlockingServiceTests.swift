@@ -36,4 +36,20 @@ final class InputBlockingServiceTests: XCTestCase {
         svc.simulateEventTapDisabled()
         XCTAssertTrue(callbackFired)
     }
+
+    @MainActor
+    func testSimulateUnlockShortcutFiresCallback() {
+        let mock = MockInputBlockingService()
+        var fired = false
+        mock.onUnlockShortcutPressed = { fired = true }
+        mock.simulateUnlockShortcut()
+        XCTAssertTrue(fired)
+    }
+
+    @MainActor
+    func testSetUnlockShortcutStoredOnMock() {
+        let mock = MockInputBlockingService()
+        mock.setUnlockShortcut("cmd+shift+l")
+        XCTAssertEqual(mock.storedShortcut, "cmd+shift+l")
+    }
 }

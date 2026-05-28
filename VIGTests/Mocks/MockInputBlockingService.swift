@@ -4,10 +4,12 @@ import Foundation
 final class MockInputBlockingService: InputBlockingServiceProtocol {
     var isBlocking: Bool = false
     var onEventTapDisabled: (() -> Void)?
+    var onUnlockShortcutPressed: (() -> Void)?
     var shouldThrow: Error?
     var startCallCount: Int = 0
     var stopCallCount: Int = 0
     var permissionGranted: Bool = true
+    var storedShortcut: String?
 
     func startBlocking() throws {
         startCallCount += 1
@@ -23,7 +25,15 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
     func checkAccessibilityPermission() -> Bool { permissionGranted }
     func requestAccessibilityPermission() {}
 
+    func setUnlockShortcut(_ shortcutString: String?) {
+        storedShortcut = shortcutString
+    }
+
     func simulateEventTapDisabled() {
         onEventTapDisabled?()
+    }
+
+    func simulateUnlockShortcut() {
+        onUnlockShortcutPressed?()
     }
 }

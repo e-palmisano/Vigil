@@ -1,16 +1,19 @@
 import Foundation
 import ApplicationServices
 import CoreGraphics
+import AppKit
 
 final class InputBlockingService: InputBlockingServiceProtocol {
     private(set) var isBlocking: Bool = false
     var onEventTapDisabled: (() -> Void)?
+    var onUnlockShortcutPressed: (() -> Void)?
 
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
     private var watchdog: DispatchSourceTimer?
     private var watchdogFailures: Int = 0
     private var retainedSelfPointer: UnsafeMutableRawPointer?
+    private var unlockShortcut: ParsedShortcut?
 
     // Passthrough marker: Vigil's own synthetic events carry this so the tap lets them through.
     static let vigilSourceUserData: Int64 = 0x5649474C // "VIGL"
@@ -35,6 +38,10 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         AXIsProcessTrustedWithOptions(options)
     }
 
+    func setUnlockShortcut(_ shortcutString: String?) {
+        unlockShortcut = shortcutString.flatMap { ParsedShortcut($0) }
+    }
+
     func startBlocking() throws {
         guard eventTap == nil else { return }
 
@@ -51,7 +58,6 @@ final class InputBlockingService: InputBlockingServiceProtocol {
                 let service = Unmanaged<InputBlockingService>.fromOpaque(ptr).takeUnretainedValue()
 
                 if type == .tapDisabledByTimeout {
-                    // Re-enable from main queue using the stored CFMachPort reference.
                     DispatchQueue.main.async { [weak service] in
                         if let tap = service?.eventTap {
                             CGEvent.tapEnable(tap: tap, enable: true)
@@ -68,6 +74,15 @@ final class InputBlockingService: InputBlockingServiceProtocol {
                 // Pass through events originating from Vigil.
                 if event.getIntegerValueField(.eventSourceUserData) == InputBlockingService.vigilSourceUserData {
                     return Unmanaged.passRetained(event)
+                }
+
+                // Detect unlock shortcut — fires even while blocking.
+                if type == .keyDown,
+                   let shortcut = service.unlockShortcut,
+                   let nsEvent = NSEvent(cgEvent: event),
+                   shortcut.matches(nsEvent) {
+                    DispatchQueue.main.async { service.onUnlockShortcutPressed?() }
+                    return nil // eat the event — don't let it reach apps
                 }
 
                 return nil // eat the event
