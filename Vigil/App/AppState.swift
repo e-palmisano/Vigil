@@ -11,6 +11,7 @@ final class AppState: ObservableObject {
     let settings: AppSettings
     let shortcutService: GlobalShortcutService
 
+    private let inputBlockingService: InputBlockingServiceProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(settings: AppSettings = .shared) {
@@ -21,6 +22,7 @@ final class AppState: ObservableObject {
         let authentication = AuthenticationService()
         let sleepPrevention = SleepPreventionService()
 
+        self.inputBlockingService = inputBlocking
         self.lockManager = LockManager(
             inputBlockingService: inputBlocking,
             displayManagerService: displayManager,
@@ -54,6 +56,7 @@ final class AppState: ObservableObject {
             onLockObscured: { [weak self] in self?.lockObscured() },
             onEmergencyUnlock: { [weak self] in self?.lockManager.emergencyUnlock() }
         )
+        inputBlockingService.setUnlockShortcut(settings.globalShortcutUnlock)
     }
 
     func lockVisible() {
