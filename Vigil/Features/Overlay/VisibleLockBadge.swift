@@ -1,41 +1,45 @@
 import SwiftUI
 
 struct VisibleLockBadge: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var visible: Bool = true
+    let isTouchIDAvailable: Bool
+    let onUnlock: () -> Void
+
+    @State private var isHovered: Bool = false
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: 0) {
+        VStack(spacing: 8) {
             HStack(spacing: 6) {
                 Image(systemName: "lock.fill")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 11, weight: .semibold))
                 Text("Vigil Active")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 12, weight: .semibold))
+                Spacer()
+                if isTouchIDAvailable {
+                    Image(systemName: "touchid")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                }
             }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 8))
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(.white.opacity(0.15), lineWidth: 1)
-            )
-            .opacity(visible ? 1 : 0)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.4), value: visible)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-        .padding(16)
-        .accessibilityLabel("Vigil input lock active")
-        .onAppear {
-            scheduleAutoHide()
-        }
-    }
+            .foregroundStyle(.primary)
 
-    private func scheduleAutoHide() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.4)) {
-                visible = false
+            Button(action: onUnlock) {
+                Label("Unlock", systemImage: "lock.open.fill")
+                    .font(.system(size: 11, weight: .medium))
+                    .frame(maxWidth: .infinity)
             }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.small)
         }
+        .padding(12)
+        .frame(width: 260)
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(.white.opacity(0.15), lineWidth: 1)
+        )
+        .scaleEffect(isHovered ? 1.02 : 1.0)
+        .animation(.spring(response: 0.2, dampingFraction: 0.7), value: isHovered)
+        .onHover { isHovered = $0 }
+        .accessibilityLabel("Vigil input lock active. Press Unlock to disable.")
     }
 }

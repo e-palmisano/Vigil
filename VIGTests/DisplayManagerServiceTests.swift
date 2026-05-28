@@ -37,4 +37,26 @@ final class DisplayManagerServiceTests: XCTestCase {
         svc.createOverlayWindows(style: .darkDimmed, mode: .visible, isTouchIDAvailable: false, onUnlock: {})
         XCTAssertEqual(svc.lastMode, .visible)
     }
+
+    func testCreateBadgeWindowSetsFlag() {
+        let svc = MockDisplayManagerService()
+        svc.createBadgeWindow(isTouchIDAvailable: true, onUnlock: {})
+        XCTAssertTrue(svc.hasBadgeWindow)
+        XCTAssertEqual(svc.createBadgeCallCount, 1)
+    }
+
+    func testRemoveBadgeWindowClearsFlag() {
+        let svc = MockDisplayManagerService()
+        svc.createBadgeWindow(isTouchIDAvailable: true, onUnlock: {})
+        svc.removeBadgeWindow()
+        XCTAssertFalse(svc.hasBadgeWindow)
+        XCTAssertEqual(svc.removeBadgeCallCount, 1)
+    }
+
+    func testRemoveAllOverlayWindowsAlsoRemovesBadge() {
+        let svc = MockDisplayManagerService()
+        svc.createBadgeWindow(isTouchIDAvailable: false, onUnlock: {})
+        svc.removeAllOverlayWindows()
+        XCTAssertFalse(svc.hasBadgeWindow)
+    }
 }

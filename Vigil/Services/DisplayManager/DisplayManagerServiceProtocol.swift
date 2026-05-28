@@ -5,4 +5,6 @@ protocol DisplayManagerServiceProtocol: AnyObject {
     func createOverlayWindows(style: OverlayStyle, mode: LockMode, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void)
     func removeAllOverlayWindows()
     func updateStyle(_ style: OverlayStyle)
+    func createBadgeWindow(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void)
+    func removeBadgeWindow()
 }

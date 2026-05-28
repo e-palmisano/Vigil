@@ -27,6 +27,7 @@
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
 		769681F195B85477D83301F2 /* BlurredSnapshotBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */; };
 		79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */; };
+		A1B2C3D4E5F60001A1B2C3D4 /* VisibleLockBadgeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */; };
 		7A4A9B19455F964BF4580DB3 /* GlobalShortcutServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7ED5828635EF057ECE79EF /* GlobalShortcutServiceTests.swift */; };
 		7CF3F0547C7F2314A5284C68 /* LockBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084827B54EF977EBD8B80524 /* LockBadgeView.swift */; };
 		81BD78667B56238732983CBB /* DarkDimmedBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F6FE4ED4521C6231A9456 /* DarkDimmedBackground.swift */; };
@@ -81,6 +82,7 @@
 		48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingService.swift; sourceTree = "<group>"; };
 		4A4A304F0167A7FC4B48DB34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadge.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadgeWindow.swift; sourceTree = "<group>"; };
 		4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayStyle.swift; sourceTree = "<group>"; };
 		64DB4953D7F95A0262D81EF6 /* GlobalShortcutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutService.swift; sourceTree = "<group>"; };
 		696E102C000BE5801C287E03 /* MockSleepPreventionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSleepPreventionService.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				F5C10E149EC545E37E5171BD /* OverlayWindow.swift */,
 				36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */,
 				4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */,
+				A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */,
 				01EA2E3505B33036EF402E2E /* Backgrounds */,
 			);
 			path = Overlay;
@@ -463,6 +466,7 @@
 				CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 				79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */,
+				A1B2C3D4E5F60001A1B2C3D4 /* VisibleLockBadgeWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

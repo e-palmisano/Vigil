@@ -6,6 +6,7 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
 
     private(set) var hasOverlays: Bool = false
 
+    private var badgeWindow: VisibleLockBadgeWindow?
     private var overlayWindows: [OverlayWindow] = []
     private var currentStyle: OverlayStyle = .darkDimmed
     private var currentMode: LockMode = .obscured
@@ -31,6 +32,19 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         overlayWindows.removeAll()
         onUnlockCallback = nil
         hasOverlays = false
+        removeBadgeWindow()
+    }
+
+    func createBadgeWindow(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
+        removeBadgeWindow()
+        let window = VisibleLockBadgeWindow(isTouchIDAvailable: isTouchIDAvailable, onUnlock: onUnlock)
+        window.makeKeyAndOrderFront(nil)
+        badgeWindow = window
+    }
+
+    func removeBadgeWindow() {
+        badgeWindow?.orderOut(nil)
+        badgeWindow = nil
     }
 
     func updateStyle(_ style: OverlayStyle) {
