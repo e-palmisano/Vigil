@@ -34,6 +34,10 @@ final class LockManager: ObservableObject {
             }
         }
 
+        inputBlockingService.onUnlockShortcutPressed = { [weak self] in
+            Task { @MainActor [weak self] in await self?.unlock() }
+        }
+
         $state.sink { [weak self] newState in
             self?.persistStateForCrashRecovery(newState)
         }.store(in: &cancellables)
@@ -80,6 +84,13 @@ final class LockManager: ObservableObject {
             )
             state = .lockedObscured
         } else {
+            displayManagerService.createBadgeWindow(
+                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
+                onUnlock: { [weak self] in
+                    Task { @MainActor [weak self] in await self?.unlock() }
+                }
+            )
+            startBackgroundTouchID()
             state = .lockedVisible
         }
     }
@@ -143,6 +154,23 @@ final class LockManager: ObservableObject {
             sleepAssertionID = nil
         }
         state = .unlocked
+    }
+
+    private func startBackgroundTouchID() {
+        guard authenticationService.isTouchIDAvailable else { return }
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let success = try await authenticationService.authenticateBiometricsOnly(
+                    reason: "Touch ID to unlock Vigil"
+                )
+                if success { performUnlock() }
+            } catch AuthenticationError.cancelled {
+                // user cancelled — stay locked, badge remains
+            } catch {
+                // Touch ID unavailable or failed silently — user can still press badge button
+            }
+        }
     }
 
     private func persistStateForCrashRecovery(_ newState: LockState) {

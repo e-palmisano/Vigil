@@ -114,4 +114,28 @@ final class LockManagerTests: XCTestCase {
         try await sut.lock(mode: .visible)
         XCTAssertEqual(sut.menuBarIcon, "lock.fill")
     }
+
+    @MainActor
+    func testLockVisibleCreatesBadgeWindow() async throws {
+        try await sut.lock(mode: .visible)
+        XCTAssertTrue(displayService.hasBadgeWindow)
+        XCTAssertEqual(displayService.createBadgeCallCount, 1)
+    }
+
+    @MainActor
+    func testUnlockShortcutCallbackTriggersUnlock() async throws {
+        authService.authResult = true
+        try await sut.lock(mode: .visible)
+        inputService.simulateUnlockShortcut()
+        try await Task.sleep(nanoseconds: 100_000_000)
+        XCTAssertEqual(sut.state, .unlocked)
+    }
+
+    @MainActor
+    func testBadgeWindowRemovedOnUnlock() async throws {
+        authService.authResult = true
+        try await sut.lock(mode: .visible)
+        await sut.unlock()
+        XCTAssertFalse(displayService.hasBadgeWindow)
+    }
 }
