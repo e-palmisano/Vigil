@@ -11,6 +11,7 @@ final class AppSettings: ObservableObject {
     @AppStorage("globalShortcutVisible") var globalShortcutVisible: String = "ctrl+cmd+l"
     @AppStorage("globalShortcutObscured") var globalShortcutObscured: String = "ctrl+shift+cmd+l"
     @AppStorage("emergencyShortcut") var emergencyShortcut: String = "ctrl+opt+cmd+v"
+    @AppStorage("globalShortcutUnlock") var globalShortcutUnlock: String = "cmd+shift+l"
     @AppStorage("launchAtLogin") var launchAtLogin: Bool = false
     @AppStorage("autoHideChrome") var autoHideChrome: Bool = true
     @AppStorage("autoHideDelay") var autoHideDelay: Double = 5.0

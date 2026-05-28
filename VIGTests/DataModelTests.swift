@@ -36,4 +36,10 @@ final class DataModelTests: XCTestCase {
     func testBadgePositionAllCases() {
         XCTAssertEqual(BadgePosition.allCases.count, 5)
     }
+
+    func testGlobalShortcutUnlockDefault() {
+        let defaults = UserDefaults(suiteName: "test.unlock.shortcut")!
+        defaults.removeObject(forKey: "globalShortcutUnlock")
+        XCTAssertEqual(AppSettings.shared.globalShortcutUnlock, "cmd+shift+l")
+    }
 }
