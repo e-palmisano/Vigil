@@ -18,6 +18,7 @@
 		2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C10E149EC545E37E5171BD /* OverlayWindow.swift */; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
 		37760284D5F61566B6CDC204 /* DisplayManagerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */; };
+		383E9A91DC6ABA91423FBAD1 /* ShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37ABFAE72389C9A81A2C39C /* ShortcutRecorderView.swift */; };
 		3BAAA9CC9E1A3DA3B72D49B8 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B24AB2B19024480B0170E4 /* AuthenticationService.swift */; };
 		3CF567297A751098EDC84345 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */; };
 		487E1205647A790B900DEB7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A4A304F0167A7FC4B48DB34 /* AppDelegate.swift */; };
@@ -109,6 +110,7 @@
 		B85D36572956AF65600CE196 /* Vigil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vigil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDF769E1CA500EF65DB42AD8 /* SleepPreventionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleepPreventionService.swift; sourceTree = "<group>"; };
 		C1AD3D9594F6DBDF3F2981FD /* MockAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationService.swift; sourceTree = "<group>"; };
+		C37ABFAE72389C9A81A2C39C /* ShortcutRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutRecorderView.swift; sourceTree = "<group>"; };
 		C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockManagerTests.swift; sourceTree = "<group>"; };
 		C94BFE2DE574DCA63CD6555A /* MenuBarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewTests.swift; sourceTree = "<group>"; };
 		C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceTests.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				EAF0236FC996BD9F14F9C653 /* SettingsView.swift */,
+				C37ABFAE72389C9A81A2C39C /* ShortcutRecorderView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -489,6 +492,7 @@
 				2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */,
 				C4334BB0158346CE2AD9499F /* SettingsView.swift in Sources */,
 				129FF4581A0D20E967CE23CB /* ShortcutFormatter.swift in Sources */,
+				383E9A91DC6ABA91423FBAD1 /* ShortcutRecorderView.swift in Sources */,
 				F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
 				CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */,

@@ -96,14 +96,7 @@ struct MenuBarView: View {
     }
 
     private var statusDescription: String {
-        switch appState.lockState {
-        case .unlocked:           return "Unlocked"
-        case .locking:            return "Locking…"
-        case .lockedVisible:      return "Locked — visible"
-        case .lockedObscured:     return "Locked — obscured"
-        case .unlocking:          return "Unlocking…"
-        case .error(let msg):     return "Error: \(msg)"
-        }
+        appState.lockState.localizedDescription
     }
 }
 

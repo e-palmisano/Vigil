@@ -26,4 +26,20 @@ enum LockState: Equatable {
         default: return false
         }
     }
+
+    var localizedDescription: String {
+        switch self {
+        case .unlocked:       return "Unlocked"
+        case .locking:        return "Locking…"
+        case .lockedVisible:  return "Locked — visible"
+        case .lockedObscured: return "Locked — obscured"
+        case .unlocking:      return "Unlocking…"
+        case .error(let code):
+            switch code {
+            case "eventTapDisabled":      return "Input monitoring stopped"
+            case "eventTapCreationFailed": return "Could not start input blocking"
+            default:                      return "Error"
+            }
+        }
+    }
 }

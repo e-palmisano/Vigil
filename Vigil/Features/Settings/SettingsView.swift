@@ -137,17 +137,35 @@ private struct OverlaySettingsView: View {
 // MARK: - Shortcuts
 
 private struct ShortcutsSettingsView: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var settings: AppSettings
 
     var body: some View {
         Form {
             Section("Lock Shortcuts") {
-                shortcutRow(label: "Lock Visibly", value: settings.globalShortcutVisible)
-                shortcutRow(label: "Lock and Obscure", value: settings.globalShortcutObscured)
+                ShortcutRecorderView(
+                    label: "Lock Visibly",
+                    shortcut: binding(\.globalShortcutVisible),
+                    onCommit: appState.reregisterShortcuts
+                )
+                ShortcutRecorderView(
+                    label: "Lock and Obscure",
+                    shortcut: binding(\.globalShortcutObscured),
+                    onCommit: appState.reregisterShortcuts
+                )
+                ShortcutRecorderView(
+                    label: "Unlock",
+                    shortcut: binding(\.globalShortcutUnlock),
+                    onCommit: appState.reregisterShortcuts
+                )
             }
 
             Section("Emergency") {
-                shortcutRow(label: "Emergency Unlock", value: settings.emergencyShortcut)
+                ShortcutRecorderView(
+                    label: "Emergency Unlock",
+                    shortcut: binding(\.emergencyShortcut),
+                    onCommit: appState.reregisterShortcuts
+                )
                 Text("Emergency unlock bypasses authentication. Use it only if the normal unlock fails.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -157,16 +175,7 @@ private struct ShortcutsSettingsView: View {
         .padding(16)
     }
 
-    private func shortcutRow(label: String, value: String) -> some View {
-        HStack {
-            Text(label)
-            Spacer()
-            Text(formattedShortcut(value))
-                .font(.system(size: 12, design: .monospaced))
-                .padding(.horizontal, 8)
-                .padding(.vertical, 3)
-                .background(Color.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 4))
-        }
+    private func binding(_ keyPath: ReferenceWritableKeyPath<AppSettings, String>) -> Binding<String> {
+        Binding(get: { settings[keyPath: keyPath] }, set: { settings[keyPath: keyPath] = $0 })
     }
-
 }

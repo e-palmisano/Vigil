@@ -40,7 +40,7 @@ final class AppState: ObservableObject {
             }
             .store(in: &cancellables)
 
-        registerShortcuts()
+        reregisterShortcuts()
         recoverLockStateIfNeeded()
     }
 
@@ -50,7 +50,7 @@ final class AppState: ObservableObject {
         Task { try? await lockManager.lock(mode: mode) }
     }
 
-    private func registerShortcuts() {
+    func reregisterShortcuts() {
         shortcutService.register(
             onLockVisible: { [weak self] in self?.lockVisible() },
             onLockObscured: { [weak self] in self?.lockObscured() },
