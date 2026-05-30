@@ -102,14 +102,39 @@ On relaunch Vigil detects that it was locked at exit (`wasLockedOnExit`) and pre
 
 ## Contributing
 
-Bug reports and pull requests are welcome. For significant changes please open an issue first to discuss the approach.
+Bug reports and pull requests are welcome.
+
+### Before you start
+
+- **For bug fixes and small improvements** — open a PR directly.
+- **For new features or significant changes** — open an issue first to discuss the approach. This avoids wasted effort on directions that don't fit the project.
+
+### Rules
+
+1. **Tests first.** Write or update tests before touching implementation. All test suites must pass.
+   ```bash
+   xcodebuild test -project Vigil.xcodeproj -scheme VIGTests -destination 'platform=macOS'
+   ```
+
+2. **Respect the architecture.** Services depend on protocols, never concrete types. New services belong in `Vigil/Services/` with a `*Protocol` interface and a mock in `VIGTests/Mocks/`. See [Architecture](#) in `CLAUDE.md` for the full pattern.
+
+3. **Coordinate systems.** Any code that touches input positions or window frames must respect the Cocoa ↔ CoreGraphics flip. Read the *Coordinate systems* note in `CLAUDE.md` before touching `InputBlockingService` or `DisplayManagerService`.
+
+4. **No new dependencies.** Vigil has zero external dependencies by design. Keep it that way.
+
+5. **Commit messages.** Follow [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`. Subject ≤ 72 chars.
+
+6. **Swift style.** Match the existing code — no force unwraps, prefer `@MainActor` annotations over manual `DispatchQueue.main.async`, immutable value types where possible.
+
+### Project setup
 
 ```bash
-# Run the test suite
-xcodebuild test -project Vigil.xcodeproj -scheme VIGTests -destination 'platform=macOS'
+brew install xcodegen
+xcodegen generate
+open Vigil.xcodeproj
 ```
 
-All 13 test suites must pass before a PR can be merged.
+Requires macOS 15.2 SDK (Xcode 16.2+).
 
 ---
 
