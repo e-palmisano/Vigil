@@ -9,6 +9,7 @@ struct OverlayContentView: View {
     @State private var chromeVisible: Bool = true
     @State private var idleTimer: Timer?
     @AppStorage("autoHideDelay") private var autoHideDelay: Double = 5.0
+    @AppStorage("autoHideChrome") private var autoHideChrome: Bool = true
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -49,6 +50,14 @@ struct OverlayContentView: View {
         .onDisappear {
             idleTimer?.invalidate()
         }
+        .onChange(of: autoHideChrome) { _, enabled in
+            if enabled {
+                scheduleHide()
+            } else {
+                idleTimer?.invalidate()
+                chromeVisible = true
+            }
+        }
     }
 
     private func showChrome() {
@@ -62,6 +71,7 @@ struct OverlayContentView: View {
     }
 
     private func scheduleHide() {
+        guard autoHideChrome else { return }
         idleTimer?.invalidate()
         idleTimer = Timer.scheduledTimer(withTimeInterval: autoHideDelay, repeats: false) { _ in
             withAnimation(reduceMotion ? nil : .easeOut(duration: 0.5)) {

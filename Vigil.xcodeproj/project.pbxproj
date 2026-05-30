@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0B3543CB349FB0E938DA64 /* DisplayManagerServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC56D9E13E8CF12E6C3F7CF /* DisplayManagerServiceProtocol.swift */; };
+		129FF4581A0D20E967CE23CB /* ShortcutFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366227DAA97F9148F20B77D3 /* ShortcutFormatter.swift */; };
 		1741FEAF77971DB08809B891 /* OverlayContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */; };
 		18BF9CA0C56CFF496D47AB89 /* BadgePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5AD6B448A2BE905505CBDC /* BadgePosition.swift */; };
 		1CEDC21F46344E77055F0413 /* UnlockWiringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E7809A17442EE9FBF8B994 /* UnlockWiringTests.swift */; };
@@ -15,8 +16,6 @@
 		2B528987611A8F2B5C25BB72 /* BlueGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */; };
 		2D9E363B26FBBCD9BE8FEBAA /* MenuBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94BFE2DE574DCA63CD6555A /* MenuBarViewTests.swift */; };
 		2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C10E149EC545E37E5171BD /* OverlayWindow.swift */; };
-		EB3C17E60FC8014512B975E5 /* MouseBlockingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C746387216C3492DF420E5 /* MouseBlockingView.swift */; };
-		E9C746387216C3492DF420E5 /* MouseBlockingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseBlockingView.swift; sourceTree = "<group>"; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
 		37760284D5F61566B6CDC204 /* DisplayManagerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */; };
 		3BAAA9CC9E1A3DA3B72D49B8 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B24AB2B19024480B0170E4 /* AuthenticationService.swift */; };
@@ -26,10 +25,12 @@
 		56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */; };
 		58D7692D4E4A2D9120AD13A8 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19943A738D6CFE770F75E12 /* BackgroundView.swift */; };
 		592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */; };
+		71BB69AD2C1E04F4D80A908A /* long-term-memory.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C6CFD356CD057A1432CCD2E /* long-term-memory.json */; };
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
 		769681F195B85477D83301F2 /* BlurredSnapshotBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */; };
 		79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */; };
 		7A4A9B19455F964BF4580DB3 /* GlobalShortcutServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7ED5828635EF057ECE79EF /* GlobalShortcutServiceTests.swift */; };
+		7C4DFFCC4F5EFA7C88BEC85C /* VisibleLockBadgeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8802FDC5A69AF69F5E413818 /* VisibleLockBadgeWindow.swift */; };
 		7CF3F0547C7F2314A5284C68 /* LockBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084827B54EF977EBD8B80524 /* LockBadgeView.swift */; };
 		81BD78667B56238732983CBB /* DarkDimmedBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30F6FE4ED4521C6231A9456 /* DarkDimmedBackground.swift */; };
 		882D342FEB94B1CBB8EDF6A2 /* MockInputBlockingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEEC7F2CE12E700646F678CF /* MockInputBlockingService.swift */; };
@@ -37,12 +38,12 @@
 		8F180F7E4586E23C0CAC607D /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0EFBD1EA01873FE6A9B183 /* MenuBarView.swift */; };
 		9374BD6EEF5CC959F340FA91 /* LockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */; };
 		93E2507713BCD7E6DACCFEFE /* MinimalBlackBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D4914B8C945B8C77D493E /* MinimalBlackBackground.swift */; };
+		9475075540862087C6282D1C /* MouseBlockingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82803924A3697CD9B800C182 /* MouseBlockingView.swift */; };
 		9776E923D1D55A19AEBBB443 /* GlobalShortcutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DB4953D7F95A0262D81EF6 /* GlobalShortcutService.swift */; };
 		9B8102420471740750B3EBFA /* AuthenticationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */; };
 		9C470D6C4C192F3E9925995F /* DisplayManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */; };
 		9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */; };
 		9EA1907293DA3AD330541E8C /* LockUnlockIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF449331A6C02029567B661 /* LockUnlockIntegrationTests.swift */; };
-		A1B2C3D4E5F60001A1B2C3D4 /* VisibleLockBadgeWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */; };
 		ACD0A30DAA0BA55759E40A6E /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F6D6CCC79559C870F798A2 /* AppSettings.swift */; };
 		B1BE8F60165A113DFB791B0A /* CrashRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD071DB940327D21DAE5FCDF /* CrashRecoveryTests.swift */; };
 		B891A185E37C88BFCDCA38B4 /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21D2DEF2214C0236DE61D64 /* ClockView.swift */; };
@@ -79,8 +80,10 @@
 		231D4914B8C945B8C77D493E /* MinimalBlackBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimalBlackBackground.swift; sourceTree = "<group>"; };
 		27EF1C6D0DC35ACDF56A8FB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockMode.swift; sourceTree = "<group>"; };
+		366227DAA97F9148F20B77D3 /* ShortcutFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutFormatter.swift; sourceTree = "<group>"; };
 		36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockButton.swift; sourceTree = "<group>"; };
 		3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueGradientBackground.swift; sourceTree = "<group>"; };
+		3C6CFD356CD057A1432CCD2E /* long-term-memory.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "long-term-memory.json"; sourceTree = "<group>"; };
 		48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingService.swift; sourceTree = "<group>"; };
 		4A4A304F0167A7FC4B48DB34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadge.swift; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 		6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
 		7E5459B50B1CC3253CD69EC6 /* GraphiteGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphiteGradientBackground.swift; sourceTree = "<group>"; };
 		7EED9EE4625BA666A333D45B /* Vigil.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vigil.entitlements; sourceTree = "<group>"; };
+		82803924A3697CD9B800C182 /* MouseBlockingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseBlockingView.swift; sourceTree = "<group>"; };
+		8802FDC5A69AF69F5E413818 /* VisibleLockBadgeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadgeWindow.swift; sourceTree = "<group>"; };
 		8A0EFBD1EA01873FE6A9B183 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		8A364D7F5C528612731088E3 /* VIGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGApp.swift; sourceTree = "<group>"; };
 		8BE7AFACDF1367EAAFB9AA95 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -97,7 +102,6 @@
 		935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayContentView.swift; sourceTree = "<group>"; };
 		952D2B6129BE0E33E73F9C1C /* DisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayManagerService.swift; sourceTree = "<group>"; };
 		9E7ED5828635EF057ECE79EF /* GlobalShortcutServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalShortcutServiceTests.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadgeWindow.swift; sourceTree = "<group>"; };
 		A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredSnapshotBackground.swift; sourceTree = "<group>"; };
 		B19943A738D6CFE770F75E12 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		B4757B2F29CD424F8D10C227 /* AuthenticationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceProtocol.swift; sourceTree = "<group>"; };
@@ -204,6 +208,7 @@
 				27F9CE09EDE4073D0DD91DF6 /* LockMode.swift */,
 				0FDDCAEAE22B14BEA34D2694 /* LockState.swift */,
 				4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */,
+				366227DAA97F9148F20B77D3 /* ShortcutFormatter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -216,6 +221,14 @@
 				7EED9EE4625BA666A333D45B /* Vigil.entitlements */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		714A71ED876CC4B8CD5FEACA /* agent */ = {
+			isa = PBXGroup;
+			children = (
+				3C6CFD356CD057A1432CCD2E /* long-term-memory.json */,
+			);
+			path = agent;
 			sourceTree = "<group>";
 		};
 		78EBBC1C3CC1D9002C36D3A1 /* Settings */ = {
@@ -233,6 +246,14 @@
 				FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */,
 			);
 			path = SleepPrevention;
+			sourceTree = "<group>";
+		};
+		8CC3C93A34D3C9C1AD82EBA1 /* .pi */ = {
+			isa = PBXGroup;
+			children = (
+				714A71ED876CC4B8CD5FEACA /* agent */,
+			);
+			path = .pi;
 			sourceTree = "<group>";
 		};
 		950EF132B6196A0A7FC1BA63 /* GlobalShortcut */ = {
@@ -289,6 +310,7 @@
 		D558645DED43326B339E8444 /* Vigil */ = {
 			isa = PBXGroup;
 			children = (
+				8CC3C93A34D3C9C1AD82EBA1 /* .pi */,
 				E13625EA1478DFCAD6D22579 /* App */,
 				1BD63CE8560CDF0EAB970434 /* Features */,
 				4A659D3912540E80695152E7 /* Models */,
@@ -334,12 +356,12 @@
 			children = (
 				F21D2DEF2214C0236DE61D64 /* ClockView.swift */,
 				084827B54EF977EBD8B80524 /* LockBadgeView.swift */,
+				82803924A3697CD9B800C182 /* MouseBlockingView.swift */,
 				935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */,
 				F5C10E149EC545E37E5171BD /* OverlayWindow.swift */,
-				E9C746387216C3492DF420E5 /* MouseBlockingView.swift */,
 				36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */,
 				4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */,
-				A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */,
+				8802FDC5A69AF69F5E413818 /* VisibleLockBadgeWindow.swift */,
 				01EA2E3505B33036EF402E2E /* Backgrounds */,
 			);
 			path = Overlay;
@@ -391,7 +413,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					6161E4DB5FF004CE4CB88A49 = {
 						ProvisioningStyle = Manual;
@@ -427,6 +449,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF567297A751098EDC84345 /* Assets.xcassets in Resources */,
+				71BB69AD2C1E04F4D80A908A /* long-term-memory.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,17 +483,18 @@
 				52D10D58CE824F56B9E00AB3 /* LockState.swift in Sources */,
 				8F180F7E4586E23C0CAC607D /* MenuBarView.swift in Sources */,
 				93E2507713BCD7E6DACCFEFE /* MinimalBlackBackground.swift in Sources */,
+				9475075540862087C6282D1C /* MouseBlockingView.swift in Sources */,
 				1741FEAF77971DB08809B891 /* OverlayContentView.swift in Sources */,
 				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
 				2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */,
-				EB3C17E60FC8014512B975E5 /* MouseBlockingView.swift in Sources */,
 				C4334BB0158346CE2AD9499F /* SettingsView.swift in Sources */,
+				129FF4581A0D20E967CE23CB /* ShortcutFormatter.swift in Sources */,
 				F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
 				CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 				79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */,
-				A1B2C3D4E5F60001A1B2C3D4 /* VisibleLockBadgeWindow.swift in Sources */,
+				7C4DFFCC4F5EFA7C88BEC85C /* VisibleLockBadgeWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +538,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -532,7 +555,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -565,12 +587,10 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -591,7 +611,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
@@ -603,7 +622,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -623,7 +641,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vigil/Resources/Vigil.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = Vigil/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -642,7 +659,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Vigil/Resources/Vigil.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
 				INFOPLIST_FILE = Vigil/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -659,7 +675,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -692,12 +707,10 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -711,7 +724,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;

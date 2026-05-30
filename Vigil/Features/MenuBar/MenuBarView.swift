@@ -40,21 +40,21 @@ struct MenuBarView: View {
             menuButton(
                 title: "Lock Visibly",
                 icon: "lock",
-                shortcut: "⌘⇧L",
+                shortcut: formattedShortcut(appState.settings.globalShortcutVisible),
                 disabled: appState.isLocked
             ) { appState.lockVisible() }
 
             menuButton(
                 title: "Lock and Obscure",
                 icon: "lock.fill",
-                shortcut: "⌘⇧K",
+                shortcut: formattedShortcut(appState.settings.globalShortcutObscured),
                 disabled: appState.isLocked
             ) { appState.lockObscured() }
 
             menuButton(
                 title: "Unlock",
                 icon: "lock.open",
-                shortcut: "⌘⇧U",
+                shortcut: formattedShortcut(appState.settings.globalShortcutUnlock),
                 disabled: !appState.isLocked
             ) { appState.unlock() }
         }
