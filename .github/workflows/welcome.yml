@@ -1,0 +1,42 @@
+name: Welcome
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Welcome on issue
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        env:
+          AUTHOR: ${{ github.event.issue.user.login }}
+        with:
+          script: |
+            const author = process.env.AUTHOR;
+            github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `Hi @${author}! 👋 Thanks for opening an issue.\n\nWe'll take a look as soon as possible. In the meantime, make sure you've included macOS version, Vigil version, and reproduction steps — it speeds things up a lot.`
+            });
+
+      - name: Welcome on pull request
+        if: github.event_name == 'pull_request_target'
+        uses: actions/github-script@v7
+        env:
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        with:
+          script: |
+            const author = process.env.AUTHOR;
+            github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.payload.pull_request.number,
+              body: `Hi @${author}! 👋 Thanks for the PR.\n\nCI will run the full test suite automatically. A maintainer will review once it's green. If you haven't already, check the contributing guidelines in the README.`
+            });
