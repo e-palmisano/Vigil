@@ -28,6 +28,12 @@ final class LockManager: ObservableObject {
         self.sleepPreventionService = sleepPreventionService
         self.settings = settings
 
+        // Keep the input tap's clickable regions in sync with the actual
+        // Vigil windows (badge / overlays), including on screen hot-plug.
+        displayManagerService.onInteractiveFramesChanged = { [weak self] rects in
+            self?.inputBlockingService.setInteractiveRects(rects)
+        }
+
         inputBlockingService.onEventTapDisabled = { [weak self] in
             Task { @MainActor [weak self] in
                 self?.handleEventTapDisabled()
@@ -73,31 +79,20 @@ final class LockManager: ObservableObject {
             sleepAssertionID = try? sleepPreventionService.preventSleep(reason: "Vigil input lock active")
         }
 
-        if mode == .obscured {
-            displayManagerService.createOverlayWindows(
-                style: settings.currentOverlayStyle,
-                mode: mode,
-                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
-                onUnlock: { [weak self] in
-                    Task { @MainActor [weak self] in await self?.unlock() }
-                }
-            )
-            state = .lockedObscured
-        } else {
-            displayManagerService.createBadgeWindow(
-                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
-                onUnlock: { [weak self] in
-                    Task { @MainActor [weak self] in await self?.unlock() }
-                }
-            )
-            state = .lockedVisible
-        }
+        showLockPresentation(for: mode)
+        state = state(for: mode)
     }
 
     func unlock() async {
         guard state.isLocked else { return }
         let previousState = state
+        let previousMode = mode(for: previousState)
         state = .unlocking
+
+        // LocalAuthentication presents a system-owned prompt. A screen-saver
+        // level overlay and the HID event tap can otherwise cover the prompt
+        // and swallow password input, leaving obscured mode impossible to exit.
+        suspendInputAndPresentationForAuthentication()
 
         do {
             let success = try await authenticationService.authenticate(
@@ -106,10 +101,10 @@ final class LockManager: ObservableObject {
             if success {
                 performUnlock()
             } else {
-                state = previousState
+                restoreLock(afterFailedAuthenticationIn: previousMode, state: previousState)
             }
         } catch {
-            state = previousState
+            restoreLock(afterFailedAuthenticationIn: previousMode, state: previousState)
         }
     }
 
@@ -120,17 +115,11 @@ final class LockManager: ObservableObject {
     func switchMode(to mode: LockMode) async {
         guard state.isLocked else { return }
         if mode == .obscured && state == .lockedVisible {
-            displayManagerService.createOverlayWindows(
-                style: settings.currentOverlayStyle,
-                mode: mode,
-                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
-                onUnlock: { [weak self] in
-                    Task { @MainActor [weak self] in await self?.unlock() }
-                }
-            )
+            showLockPresentation(for: .obscured)
             state = .lockedObscured
         } else if mode == .visible && state == .lockedObscured {
             displayManagerService.removeAllOverlayWindows()
+            showLockPresentation(for: .visible)
             state = .lockedVisible
         }
     }
@@ -145,6 +134,43 @@ final class LockManager: ObservableObject {
         }
     }
 
+    private func showLockPresentation(for mode: LockMode) {
+        if mode == .obscured {
+            displayManagerService.createOverlayWindows(
+                style: settings.currentOverlayStyle,
+                mode: mode,
+                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
+                onUnlock: { [weak self] in
+                    Task { @MainActor [weak self] in await self?.unlock() }
+                }
+            )
+        } else {
+            displayManagerService.createBadgeWindow(
+                isTouchIDAvailable: authenticationService.isTouchIDAvailable,
+                onUnlock: { [weak self] in
+                    Task { @MainActor [weak self] in await self?.unlock() }
+                }
+            )
+        }
+    }
+
+    private func suspendInputAndPresentationForAuthentication() {
+        inputBlockingService.stopBlocking()
+        displayManagerService.removeAllOverlayWindows()
+    }
+
+    private func restoreLock(afterFailedAuthenticationIn mode: LockMode, state previousState: LockState) {
+        do {
+            try inputBlockingService.startBlocking(mode: mode)
+        } catch {
+            self.state = .error("eventTapCreationFailed")
+            return
+        }
+
+        showLockPresentation(for: mode)
+        state = previousState
+    }
+
     private func performUnlock() {
         inputBlockingService.stopBlocking()
         displayManagerService.removeAllOverlayWindows()
@@ -153,6 +179,26 @@ final class LockManager: ObservableObject {
             sleepAssertionID = nil
         }
         state = .unlocked
+    }
+
+    private func mode(for state: LockState) -> LockMode {
+        switch state {
+        case .lockedVisible:
+            return .visible
+        case .lockedObscured:
+            return .obscured
+        default:
+            return settings.lockMode
+        }
+    }
+
+    private func state(for mode: LockMode) -> LockState {
+        switch mode {
+        case .visible:
+            return .lockedVisible
+        case .obscured:
+            return .lockedObscured
+        }
     }
 
     private func persistStateForCrashRecovery(_ newState: LockState) {

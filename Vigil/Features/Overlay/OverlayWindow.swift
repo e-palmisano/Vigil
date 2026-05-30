@@ -3,6 +3,9 @@ import SwiftUI
 
 final class OverlayWindow: NSPanel {
 
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { false }
+
     private let targetScreen: NSScreen
 
     init(screen: NSScreen) {
@@ -32,7 +35,13 @@ final class OverlayWindow: NSPanel {
         let hosting = NSHostingView(rootView: view)
         hosting.frame = CGRect(origin: .zero, size: targetScreen.frame.size)
         hosting.autoresizingMask = [.width, .height]
-        contentView = hosting
+
+        let blocker = MouseBlockingView()
+        blocker.frame = CGRect(origin: .zero, size: targetScreen.frame.size)
+        blocker.autoresizingMask = [.width, .height]
+        blocker.addSubview(hosting)
+
+        contentView = blocker
     }
 
     func updateForScreen() {

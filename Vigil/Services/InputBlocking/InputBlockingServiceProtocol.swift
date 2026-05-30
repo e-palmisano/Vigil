@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 protocol InputBlockingServiceProtocol: AnyObject {
     var isBlocking: Bool { get }
@@ -9,6 +10,11 @@ protocol InputBlockingServiceProtocol: AnyObject {
     func checkAccessibilityPermission() -> Bool
     func requestAccessibilityPermission()
     func setUnlockShortcut(_ shortcutString: String?)
+
+    /// Regions where mouse clicks are allowed through to Vigil's own windows.
+    /// Rects are in Cocoa global coordinates (origin bottom-left); the service
+    /// converts them to CoreGraphics event coordinates internally.
+    func setInteractiveRects(_ rects: [CGRect])
 }
 
 enum InputBlockingError: Error {

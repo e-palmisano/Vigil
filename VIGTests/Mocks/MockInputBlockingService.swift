@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 @testable import Vigil
 
 final class MockInputBlockingService: InputBlockingServiceProtocol {
@@ -12,6 +13,9 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
     var storedShortcut: String?
 
     var lastBlockingMode: LockMode?
+
+    var interactiveRects: [CGRect] = []
+    var setInteractiveRectsCallCount: Int = 0
 
     func startBlocking(mode: LockMode) throws {
         lastBlockingMode = mode
@@ -30,6 +34,11 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
 
     func setUnlockShortcut(_ shortcutString: String?) {
         storedShortcut = shortcutString
+    }
+
+    func setInteractiveRects(_ rects: [CGRect]) {
+        setInteractiveRectsCallCount += 1
+        interactiveRects = rects
     }
 
     func simulateEventTapDisabled() {

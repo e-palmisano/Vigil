@@ -15,6 +15,8 @@
 		2B528987611A8F2B5C25BB72 /* BlueGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */; };
 		2D9E363B26FBBCD9BE8FEBAA /* MenuBarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94BFE2DE574DCA63CD6555A /* MenuBarViewTests.swift */; };
 		2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C10E149EC545E37E5171BD /* OverlayWindow.swift */; };
+		EB3C17E60FC8014512B975E5 /* MouseBlockingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C746387216C3492DF420E5 /* MouseBlockingView.swift */; };
+		E9C746387216C3492DF420E5 /* MouseBlockingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseBlockingView.swift; sourceTree = "<group>"; };
 		3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A364D7F5C528612731088E3 /* VIGApp.swift */; };
 		37760284D5F61566B6CDC204 /* DisplayManagerServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E08BC6FD7E94719621BA51C /* DisplayManagerServiceTests.swift */; };
 		3BAAA9CC9E1A3DA3B72D49B8 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0B24AB2B19024480B0170E4 /* AuthenticationService.swift */; };
@@ -334,6 +336,7 @@
 				084827B54EF977EBD8B80524 /* LockBadgeView.swift */,
 				935C3F8D0E8BD8DC3C96A9F1 /* OverlayContentView.swift */,
 				F5C10E149EC545E37E5171BD /* OverlayWindow.swift */,
+				E9C746387216C3492DF420E5 /* MouseBlockingView.swift */,
 				36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */,
 				4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */,
 				A1B2C3D4E5F60002A1B2C3D4 /* VisibleLockBadgeWindow.swift */,
@@ -460,6 +463,7 @@
 				1741FEAF77971DB08809B891 /* OverlayContentView.swift in Sources */,
 				592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */,
 				2EE257DEA0E7C667613FABD8 /* OverlayWindow.swift in Sources */,
+				EB3C17E60FC8014512B975E5 /* MouseBlockingView.swift in Sources */,
 				C4334BB0158346CE2AD9499F /* SettingsView.swift in Sources */,
 				F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,

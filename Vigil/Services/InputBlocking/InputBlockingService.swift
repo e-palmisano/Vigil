@@ -16,26 +16,41 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     private var retainedSelfPointer: UnsafeMutableRawPointer?
     private var unlockShortcut: ParsedShortcut?
 
+    // Clickable regions in CoreGraphics event coordinates (origin top-left).
+    // Read on the tap thread, written on the main thread → guarded by a lock.
+    private let rectsLock = NSLock()
+    private var interactiveRectsCG: [CGRect] = []
+
     // Passthrough marker: Vigil's own synthetic events carry this so the tap lets them through.
     static let vigilSourceUserData: Int64 = 0x5649474C // "VIGL"
 
-    private static func eventMask(for mode: LockMode) -> CGEventMask {
+    /// Converts a rect from Cocoa global coordinates (origin bottom-left, y up)
+    /// to CoreGraphics event coordinates (origin top-left, y down), flipping
+    /// about the primary display's top edge. `CGEvent.location` lives in this
+    /// flipped space, so interactive rects must be converted before hit-testing.
+    static func globalCGRect(from cocoaRect: CGRect, primaryHeight: CGFloat) -> CGRect {
+        CGRect(
+            x: cocoaRect.minX,
+            y: primaryHeight - cocoaRect.maxY,
+            width: cocoaRect.width,
+            height: cocoaRect.height
+        )
+    }
+
+    // Exposed for unit testing.
+    static func eventMask(for mode: LockMode) -> CGEventMask {
         let keyboardTypes: [CGEventType] = [.keyDown, .keyUp, .flagsChanged]
-        let mouseTypes: [CGEventType] = [
-            .leftMouseDown, .leftMouseUp, .leftMouseDragged,
-            .rightMouseDown, .rightMouseUp, .rightMouseDragged,
-            .otherMouseDown, .otherMouseUp, .otherMouseDragged,
-            .mouseMoved
-        ]
         let scrollTypes: [CGEventType] = [.scrollWheel]
 
-        let types: [CGEventType]
-        switch mode {
-        case .obscured:
-            types = keyboardTypes + mouseTypes + scrollTypes
-        case .visible:
-            types = keyboardTypes + scrollTypes
-        }
+        let mouseTypes: [CGEventType] = [
+            .leftMouseDown, .leftMouseUp,
+            .rightMouseDown, .rightMouseUp,
+            .otherMouseDown, .otherMouseUp
+        ]
+        // Mouse clicks are blocked at the HID level: interaction is allowed
+        // only inside the unlock button / badge area. Mouse movement
+        // (hover) is left unblocked so chrome auto-hide keeps working.
+        let types = keyboardTypes + scrollTypes + mouseTypes
         return types.reduce(CGEventMask(0)) { $0 | (CGEventMask(1) << $1.rawValue) }
     }
 
@@ -50,6 +65,14 @@ final class InputBlockingService: InputBlockingServiceProtocol {
 
     func setUnlockShortcut(_ shortcutString: String?) {
         unlockShortcut = shortcutString.flatMap { ParsedShortcut($0) }
+    }
+
+    func setInteractiveRects(_ rects: [CGRect]) {
+        let primaryHeight = Self.primaryDisplayHeight()
+        let flipped = rects.map { Self.globalCGRect(from: $0, primaryHeight: primaryHeight) }
+        rectsLock.lock()
+        interactiveRectsCG = flipped
+        rectsLock.unlock()
     }
 
     func startBlocking(mode: LockMode = .obscured) throws {
@@ -84,6 +107,14 @@ final class InputBlockingService: InputBlockingServiceProtocol {
                 // Pass through events originating from Vigil.
                 if event.getIntegerValueField(.eventSourceUserData) == InputBlockingService.vigilSourceUserData {
                     return Unmanaged.passRetained(event)
+                }
+
+                // Allow mouse interaction only inside Vigil's own windows.
+                if service.isMouseEvent(type) {
+                    if service.isPointInInteractiveArea(event.location) {
+                        return Unmanaged.passRetained(event)
+                    }
+                    return nil // eat the click
                 }
 
                 // Detect unlock shortcut — fires even while blocking.
@@ -148,6 +179,33 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         eventTap = nil
         runLoopSource = nil
         isBlocking = false
+    }
+
+    // MARK: - Mouse event filtering
+
+    private func isMouseEvent(_ type: CGEventType) -> Bool {
+        switch type {
+        case .leftMouseDown, .leftMouseUp,
+             .rightMouseDown, .rightMouseUp,
+             .otherMouseDown, .otherMouseUp:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func isPointInInteractiveArea(_ point: CGPoint) -> Bool {
+        rectsLock.lock()
+        let rects = interactiveRectsCG
+        rectsLock.unlock()
+        return rects.contains { $0.contains(point) }
+    }
+
+    /// Height of the primary display (origin == .zero) — the axis the
+    /// Cocoa→CoreGraphics y-flip is measured against.
+    private static func primaryDisplayHeight() -> CGFloat {
+        let primary = NSScreen.screens.first { $0.frame.origin == .zero } ?? NSScreen.screens.first
+        return primary?.frame.height ?? 0
     }
 
     // MARK: - Watchdog

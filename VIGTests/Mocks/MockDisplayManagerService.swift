@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 @testable import Vigil
 
 final class MockDisplayManagerService: DisplayManagerServiceProtocol {
@@ -14,6 +15,14 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
     var lastIsTouchIDAvailable: Bool?
     var capturedBadgeOnUnlock: (() -> Void)?
 
+    var onInteractiveFramesChanged: (([CGRect]) -> Void)?
+    /// Frames the mock reports when windows are "shown".
+    var stubbedInteractiveFrames: [CGRect] = []
+
+    var interactiveFrames: [CGRect] {
+        hasBadgeWindow || hasOverlays ? stubbedInteractiveFrames : []
+    }
+
     func createOverlayWindows(style: OverlayStyle, mode: LockMode, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
         createCallCount += 1
         lastStyle = style
@@ -21,12 +30,14 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
         lastIsTouchIDAvailable = isTouchIDAvailable
         capturedOnUnlock = onUnlock
         hasOverlays = true
+        onInteractiveFramesChanged?(interactiveFrames)
     }
 
     func removeAllOverlayWindows() {
         removeCallCount += 1
         hasOverlays = false
         hasBadgeWindow = false
+        onInteractiveFramesChanged?(interactiveFrames)
     }
 
     func updateStyle(_ style: OverlayStyle) {
@@ -38,6 +49,7 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
         lastIsTouchIDAvailable = isTouchIDAvailable
         capturedBadgeOnUnlock = onUnlock
         hasBadgeWindow = true
+        onInteractiveFramesChanged?(interactiveFrames)
     }
 
     func removeBadgeWindow() {

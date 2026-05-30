@@ -5,6 +5,12 @@ import SwiftUI
 final class DisplayManagerService: DisplayManagerServiceProtocol {
 
     private(set) var hasOverlays: Bool = false
+    var onInteractiveFramesChanged: (([CGRect]) -> Void)?
+
+    var interactiveFrames: [CGRect] {
+        if let badgeWindow { return [badgeWindow.frame] }
+        return overlayWindows.map { $0.frame }
+    }
 
     private var badgeWindow: VisibleLockBadgeWindow?
     private var overlayWindows: [OverlayWindow] = []
@@ -24,6 +30,7 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         buildWindows()
         observeScreenChanges()
         hasOverlays = true
+        notifyInteractiveFramesChanged()
     }
 
     func removeAllOverlayWindows() {
@@ -33,6 +40,7 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         onUnlockCallback = nil
         hasOverlays = false
         removeBadgeWindow()
+        notifyInteractiveFramesChanged()
     }
 
     func createBadgeWindow(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
@@ -40,11 +48,16 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         let window = VisibleLockBadgeWindow(isTouchIDAvailable: isTouchIDAvailable, onUnlock: onUnlock)
         window.makeKeyAndOrderFront(nil)
         badgeWindow = window
+        notifyInteractiveFramesChanged()
     }
 
     func removeBadgeWindow() {
         badgeWindow?.orderOut(nil)
         badgeWindow = nil
+    }
+
+    private func notifyInteractiveFramesChanged() {
+        onInteractiveFramesChanged?(interactiveFrames)
     }
 
     func updateStyle(_ style: OverlayStyle) {
