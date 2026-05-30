@@ -18,6 +18,7 @@
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="MIT license" />
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat-square" alt="Swift 6.0" />
   <img src="https://img.shields.io/github/v/release/e-palmisano/vigil?style=flat-square&color=green" alt="Latest release" />
+  <a href="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml"><img src="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 </p>
 
 ---
