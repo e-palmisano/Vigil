@@ -116,3 +116,14 @@ All 13 test suites must pass before a PR can be merged.
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+## Acknowledgements
+
+Vigil was designed and built with the help of two AI collaborators:
+
+- **[Claude Code](https://claude.ai/code)** by Anthropic — pair programmer, architect, and tireless reviewer throughout the entire development process.
+- **[Pi Agent](https://github.com/superego-ai/pai)** — personal AI assistant that helped shape ideas, structure decisions, and keep the work grounded.
+
+> *Good tools make good work possible.*
