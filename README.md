@@ -15,7 +15,7 @@
 
 <p align="center">
   <a href="https://github.com/e-palmisano/Vigil/releases/latest">
-    <img src="https://img.shields.io/badge/Download-macOS-black?style=for-the-badge&logo=apple" alt="Download for macOS" />
+    <img src="assets/macos-badge.png" alt="Download app for macOS" width="180" />
   </a>
 </p>
 
