@@ -44,3 +44,27 @@ jobs:
         with:
           files: build/Vigil-*.dmg
           generate_release_notes: true
+
+      - name: Update Homebrew tap
+        env:
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          VERSION=${REF_NAME#v}
+          DMG_PATH="build/Vigil-${VERSION}.dmg"
+          SHA256=$(shasum -a 256 "$DMG_PATH" | awk '{print $1}')
+
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          git clone https://x-access-token:${TAP_GITHUB_TOKEN}@github.com/e-palmisano/homebrew-tap.git /tmp/homebrew-tap
+
+          sed -i '' \
+            -e "s/version \".*\"/version \"${VERSION}\"/" \
+            -e "s/sha256 .*/sha256 \"${SHA256}\"/" \
+            /tmp/homebrew-tap/Casks/vigil.rb
+
+          cd /tmp/homebrew-tap
+          git add Casks/vigil.rb
+          git commit -m "chore: update Vigil to v${VERSION}"
+          git push
