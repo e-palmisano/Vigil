@@ -149,6 +149,6 @@ MIT — see [LICENSE](LICENSE) for details.
 Vigil was designed and built with the help of two AI collaborators:
 
 - **[Claude Code](https://claude.ai/code)** by Anthropic — pair programmer, architect, and tireless reviewer throughout the entire development process.
-- **[Pi Coding Agent]([https://github.com/superego-ai/pai](https://pi.dev/))** — a minimal terminal coding harness.
+- **[Pi Coding Agent](https://pi.dev/)** — a minimal terminal coding harness.
 
 > *Good tools make good work possible.*
