@@ -7,9 +7,15 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
     private(set) var hasOverlays: Bool = false
     var onInteractiveFramesChanged: (([CGRect]) -> Void)?
 
+    private let settings: AppSettings
+
     var interactiveFrames: [CGRect] {
         if let badgeWindow { return [badgeWindow.frame] }
         return overlayWindows.map { $0.frame }
+    }
+
+    init(settings: AppSettings = .shared) {
+        self.settings = settings
     }
 
     private var badgeWindow: VisibleLockBadgeWindow?
@@ -83,7 +89,9 @@ final class DisplayManagerService: DisplayManagerServiceProtocol {
         OverlayContentView(
             style: style,
             isTouchIDAvailable: isTouchIDAvailable,
-            onUnlock: onUnlockCallback ?? {}
+            onUnlock: onUnlockCallback ?? {},
+            autoHideChrome: settings.autoHideChrome,
+            autoHideDelay: settings.autoHideDelay
         )
     }
 

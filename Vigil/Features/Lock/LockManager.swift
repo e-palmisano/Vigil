@@ -1,6 +1,8 @@
 import SwiftUI
 import Combine
 import IOKit.pwr_mgt
+import OSLog
+import UserNotifications
 
 @MainActor
 final class LockManager: ObservableObject {
@@ -124,13 +126,34 @@ final class LockManager: ObservableObject {
         }
     }
 
+    private let logger = Logger(subsystem: "com.vigil.app", category: "LockManager")
+
     func handleEventTapDisabled() {
+        logger.error("CGEventTap was disabled by the system — input blocking stopped unexpectedly")
         state = .error("eventTapDisabled")
+        postEventTapNotification()
         Task {
             try? await Task.sleep(nanoseconds: 500_000_000)
             if case .error = state {
                 state = .unlocked
             }
+        }
+    }
+
+    private func postEventTapNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized else { return }
+            let content = UNMutableNotificationContent()
+            content.title = "Vigil: Input Monitoring Stopped"
+            content.body = "The system disabled input blocking. Your machine may be briefly unprotected."
+            content.sound = .defaultCritical
+            let request = UNNotificationRequest(
+                identifier: "vigil.eventTapDisabled",
+                content: content,
+                trigger: nil
+            )
+            center.add(request, withCompletionHandler: nil)
         }
     }
 

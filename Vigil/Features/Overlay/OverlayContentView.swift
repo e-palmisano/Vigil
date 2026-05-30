@@ -5,11 +5,11 @@ struct OverlayContentView: View {
     let isTouchIDAvailable: Bool
     let onUnlock: () -> Void
     var snapshot: NSImage?
+    var autoHideChrome: Bool = true
+    var autoHideDelay: Double = 5.0
 
     @State private var chromeVisible: Bool = true
     @State private var idleTimer: Timer?
-    @AppStorage("autoHideDelay") private var autoHideDelay: Double = 5.0
-    @AppStorage("autoHideChrome") private var autoHideChrome: Bool = true
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
