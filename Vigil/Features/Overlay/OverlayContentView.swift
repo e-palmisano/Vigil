@@ -17,24 +17,13 @@ struct OverlayContentView: View {
             BackgroundView(style: style, snapshot: snapshot)
                 .ignoresSafeArea()
 
-            VStack(spacing: 32) {
-                Spacer()
-
-                LockBadgeView()
-                    .opacity(chromeVisible ? 1 : 0)
-                    .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
-
-                ClockView()
-
-                Spacer()
-
-                UnlockButton(isTouchIDAvailable: isTouchIDAvailable, onTap: onUnlock)
-                    .opacity(chromeVisible ? 1 : 0)
-                    .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
-                    .padding(.bottom, 60)
+            if #available(macOS 26, *) {
+                GlassEffectContainer(spacing: 120) {
+                    chromeLayer
+                }
+            } else {
+                chromeLayer
             }
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel("Vigil lock screen")
         }
         .onContinuousHover { phase in
             switch phase {
@@ -58,6 +47,27 @@ struct OverlayContentView: View {
                 chromeVisible = true
             }
         }
+    }
+
+    private var chromeLayer: some View {
+        VStack(spacing: 32) {
+            Spacer()
+
+            LockBadgeView()
+                .opacity(chromeVisible ? 1 : 0)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
+
+            ClockView()
+
+            Spacer()
+
+            UnlockButton(isTouchIDAvailable: isTouchIDAvailable, onTap: onUnlock)
+                .opacity(chromeVisible ? 1 : 0)
+                .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
+                .padding(.bottom, 60)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Vigil lock screen")
     }
 
     private func showChrome() {
