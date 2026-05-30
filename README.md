@@ -14,11 +14,19 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/e-palmisano/Vigil/releases/latest">
+    <img src="https://img.shields.io/badge/Download-macOS-black?style=for-the-badge&logo=apple" alt="Download for macOS" />
+  </a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/macOS-15.2%2B-blue?style=flat-square" alt="macOS 15.2+" />
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="MIT license" />
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat-square" alt="Swift 6.0" />
   <img src="https://img.shields.io/github/v/release/e-palmisano/vigil?style=flat-square&color=green" alt="Latest release" />
   <a href="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml"><img src="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/e-palmisano/Vigil"><img src="https://img.shields.io/github/stars/e-palmisano/vigil?style=flat-square&logo=github&label=stars&color=4c71f2" alt="GitHub stars" /></a>
+  <a href="https://www.linkedin.com/in/enzo-palmisano-b16363147/"><img src="https://img.shields.io/badge/LinkedIn-Enzo_Palmisano-0077B5?style=flat-square&logo=linkedin" alt="LinkedIn" /></a>
 </p>
 
 ---
