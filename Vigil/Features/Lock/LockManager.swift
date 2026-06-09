@@ -44,9 +44,23 @@ final class LockManager: ObservableObject {
             Task { @MainActor [weak self] in await self?.unlock() }
         }
 
+        inputBlockingService.onEmergencyShortcutHeld = { [weak self] in
+            Task { @MainActor [weak self] in self?.emergencyUnlock() }
+        }
+
         $state.sink { [weak self] newState in
             self?.persistStateForCrashRecovery(newState)
         }.store(in: &cancellables)
+
+        // Re-render the overlays when the user changes the style in Settings
+        // while locked (updateStyle no-ops when the style is unchanged).
+        settings.objectWillChange
+            .receive(on: RunLoop.main)
+            .sink { [weak self] in
+                guard let self, self.state == .lockedObscured else { return }
+                self.displayManagerService.updateStyle(self.settings.currentOverlayStyle)
+            }
+            .store(in: &cancellables)
     }
 
     var menuBarIcon: String {
@@ -89,10 +103,13 @@ final class LockManager: ObservableObject {
         let previousMode = mode(for: previousState)
         state = .unlocking
 
-        // LocalAuthentication presents a system-owned prompt. A screen-saver
-        // level overlay and the HID event tap can otherwise cover the prompt
-        // and swallow password input, leaving obscured mode impossible to exit.
-        suspendInputAndPresentationForAuthentication()
+        // LocalAuthentication presents a system-owned prompt. The HID tap
+        // must stop so the prompt can receive the password, and the overlays
+        // drop below the prompt's level — but they stay on screen, so the
+        // desktop remains covered and clicks outside the prompt are still
+        // swallowed. (In visible mode the screen is intentionally usable to
+        // look at; only the tap is suspended.)
+        suspendInputForAuthentication()
 
         do {
             let success = try await authenticationService.authenticate(
@@ -125,13 +142,10 @@ final class LockManager: ObservableObject {
     }
 
     func handleEventTapDisabled() {
-        state = .error("eventTapDisabled")
-        Task {
-            try? await Task.sleep(nanoseconds: 500_000_000)
-            if case .error = state {
-                state = .unlocked
-            }
-        }
+        // The tap is gone, so input is no longer blocked: leaving the
+        // overlays up would only fake a lock that isn't there.
+        performUnlock()
+        enterTransientErrorState("eventTapDisabled")
     }
 
     private func showLockPresentation(for mode: LockMode) {
@@ -146,6 +160,7 @@ final class LockManager: ObservableObject {
             )
         } else {
             displayManagerService.createBadgeWindow(
+                position: settings.currentBadgePosition,
                 isTouchIDAvailable: authenticationService.isTouchIDAvailable,
                 onUnlock: { [weak self] in
                     Task { @MainActor [weak self] in await self?.unlock() }
@@ -154,21 +169,35 @@ final class LockManager: ObservableObject {
         }
     }
 
-    private func suspendInputAndPresentationForAuthentication() {
+    private func suspendInputForAuthentication() {
         inputBlockingService.stopBlocking()
-        displayManagerService.removeAllOverlayWindows()
+        displayManagerService.setAuthenticationMode(true)
     }
 
     private func restoreLock(afterFailedAuthenticationIn mode: LockMode, state previousState: LockState) {
         do {
             try inputBlockingService.startBlocking(mode: mode)
         } catch {
-            self.state = .error("eventTapCreationFailed")
+            // Re-arming the tap failed: a lock screen that doesn't block
+            // input is worse than no lock — tear everything down and
+            // surface the error briefly.
+            performUnlock()
+            enterTransientErrorState("eventTapCreationFailed")
             return
         }
 
-        showLockPresentation(for: mode)
+        displayManagerService.setAuthenticationMode(false)
         state = previousState
+    }
+
+    private func enterTransientErrorState(_ code: String) {
+        state = .error(code)
+        Task {
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            if case .error = state {
+                state = .unlocked
+            }
+        }
     }
 
     private func performUnlock() {

@@ -7,22 +7,29 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     private(set) var isBlocking: Bool = false
     var onEventTapDisabled: (() -> Void)?
     var onUnlockShortcutPressed: (() -> Void)?
+    var onEmergencyShortcutHeld: (() -> Void)?
 
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
-    private var tapRunLoop: CFRunLoop?
     private var watchdog: DispatchSourceTimer?
     private var watchdogFailures: Int = 0
     private var retainedSelfPointer: UnsafeMutableRawPointer?
-    private var unlockShortcut: ParsedShortcut?
+    // Main-thread only: armed when the emergency combo goes down, fired
+    // after `emergencyHoldDuration` unless a key-up / modifier change cancels it.
+    private var emergencyHoldTimer: Timer?
 
-    // Clickable regions in CoreGraphics event coordinates (origin top-left).
-    // Read on the tap thread, written on the main thread → guarded by a lock.
-    private let rectsLock = NSLock()
+    // State shared between the main thread and the tap thread → guarded by `stateLock`.
+    private let stateLock = NSLock()
     private var interactiveRectsCG: [CGRect] = []
+    private var unlockShortcut: ParsedShortcut?
+    private var emergencyShortcut: ParsedShortcut?
+    private var tapRunLoop: CFRunLoop?
+    private var stopRequested = false
 
     // Passthrough marker: Vigil's own synthetic events carry this so the tap lets them through.
     static let vigilSourceUserData: Int64 = 0x5649474C // "VIGL"
+
+    static let emergencyHoldDuration: TimeInterval = 3.0
 
     /// Converts a rect from Cocoa global coordinates (origin bottom-left, y up)
     /// to CoreGraphics event coordinates (origin top-left, y down), flipping
@@ -64,15 +71,25 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     }
 
     func setUnlockShortcut(_ shortcutString: String?) {
-        unlockShortcut = shortcutString.flatMap { ParsedShortcut($0) }
+        let parsed = shortcutString.flatMap { ParsedShortcut($0) }
+        stateLock.lock()
+        unlockShortcut = parsed
+        stateLock.unlock()
+    }
+
+    func setEmergencyShortcut(_ shortcutString: String?) {
+        let parsed = shortcutString.flatMap { ParsedShortcut($0) }
+        stateLock.lock()
+        emergencyShortcut = parsed
+        stateLock.unlock()
     }
 
     func setInteractiveRects(_ rects: [CGRect]) {
         let primaryHeight = Self.primaryDisplayHeight()
         let flipped = rects.map { Self.globalCGRect(from: $0, primaryHeight: primaryHeight) }
-        rectsLock.lock()
+        stateLock.lock()
         interactiveRectsCG = flipped
-        rectsLock.unlock()
+        stateLock.unlock()
     }
 
     func startBlocking(mode: LockMode = .obscured) throws {
@@ -88,11 +105,15 @@ final class InputBlockingService: InputBlockingServiceProtocol {
             eventsOfInterest: Self.eventMask(for: mode),
             callback: { _, type, event, userInfo -> Unmanaged<CGEvent>? in
                 guard let ptr = userInfo else { return Unmanaged.passRetained(event) }
+                // Valid for the lifetime of the tap: `retainedSelfPointer` keeps
+                // the service alive until stopBlocking() releases it, and the
+                // main-queue blocks below capture it strongly.
                 let service = Unmanaged<InputBlockingService>.fromOpaque(ptr).takeUnretainedValue()
 
                 if type == .tapDisabledByTimeout {
-                    DispatchQueue.main.async { [weak service] in
-                        if let tap = service?.eventTap {
+                    // `eventTap` is only mutated on the main thread — re-enable there.
+                    DispatchQueue.main.async {
+                        if let tap = service.eventTap {
                             CGEvent.tapEnable(tap: tap, enable: true)
                         }
                     }
@@ -117,13 +138,25 @@ final class InputBlockingService: InputBlockingServiceProtocol {
                     return nil // eat the click
                 }
 
-                // Detect unlock shortcut — fires even while blocking.
-                if type == .keyDown,
-                   let shortcut = service.unlockShortcut,
-                   let nsEvent = NSEvent(cgEvent: event),
-                   shortcut.matches(nsEvent) {
-                    DispatchQueue.main.async { service.onUnlockShortcutPressed?() }
-                    return nil // eat the event — don't let it reach apps
+                if type == .keyDown, let nsEvent = NSEvent(cgEvent: event) {
+                    // Detect unlock shortcut — fires even while blocking.
+                    if let shortcut = service.currentUnlockShortcut(), shortcut.matches(nsEvent) {
+                        DispatchQueue.main.async { service.onUnlockShortcutPressed?() }
+                        return nil // eat the event — don't let it reach apps
+                    }
+                    // Emergency combo must be detected here: NSEvent global
+                    // monitors never see events this tap has already eaten.
+                    if let emergency = service.currentEmergencyShortcut(), emergency.matches(nsEvent) {
+                        if !nsEvent.isARepeat {
+                            DispatchQueue.main.async { service.beginEmergencyHold() }
+                        }
+                        return nil
+                    }
+                }
+
+                // Releasing any key or changing modifiers aborts a pending emergency hold.
+                if type == .keyUp || type == .flagsChanged {
+                    DispatchQueue.main.async { service.cancelEmergencyHold() }
                 }
 
                 return nil // eat the event
@@ -141,11 +174,20 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         self.eventTap = tap
         self.runLoopSource = source
 
+        stateLock.lock()
+        stopRequested = false
+        stateLock.unlock()
+
         let tapQueue = DispatchQueue(label: "vig.inputblocking", qos: .userInteractive)
         tapQueue.async { [weak self] in
-            guard let self, let source = self.runLoopSource, let tap = self.eventTap else { return }
+            guard let self, let source else { return }
             let rl = CFRunLoopGetCurrent()
-            self.tapRunLoop = rl
+            self.stateLock.lock()
+            // stopBlocking() may have run before this block: don't park the thread.
+            let cancelled = self.stopRequested
+            if !cancelled { self.tapRunLoop = rl }
+            self.stateLock.unlock()
+            guard !cancelled else { return }
             CFRunLoopAddSource(rl, source, .commonModes)
             CGEvent.tapEnable(tap: tap, enable: true)
             CFRunLoopRun()
@@ -158,19 +200,21 @@ final class InputBlockingService: InputBlockingServiceProtocol {
 
     func stopBlocking() {
         stopWatchdog()
+        cancelEmergencyHold()
         if let tap = eventTap {
             CGEvent.tapEnable(tap: tap, enable: false)
         }
-        if let source = runLoopSource {
-            if let rl = tapRunLoop {
+        stateLock.lock()
+        stopRequested = true
+        let rl = tapRunLoop
+        tapRunLoop = nil
+        stateLock.unlock()
+        if let rl {
+            // CFRunLoop is thread-safe: tear down the tap thread's loop from here.
+            if let source = runLoopSource {
                 CFRunLoopRemoveSource(rl, source, .commonModes)
-            } else {
-                CFRunLoopRemoveSource(CFRunLoopGetMain(), source, .commonModes)
             }
-        }
-        if let rl = tapRunLoop {
             CFRunLoopStop(rl)
-            tapRunLoop = nil
         }
         if let ptr = retainedSelfPointer {
             Unmanaged<InputBlockingService>.fromOpaque(ptr).release()
@@ -179,6 +223,39 @@ final class InputBlockingService: InputBlockingServiceProtocol {
         eventTap = nil
         runLoopSource = nil
         isBlocking = false
+    }
+
+    // MARK: - Shortcuts (read from the tap thread)
+
+    private func currentUnlockShortcut() -> ParsedShortcut? {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return unlockShortcut
+    }
+
+    private func currentEmergencyShortcut() -> ParsedShortcut? {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return emergencyShortcut
+    }
+
+    // MARK: - Emergency hold (main thread)
+
+    private func beginEmergencyHold() {
+        guard emergencyHoldTimer == nil else { return }
+        emergencyHoldTimer = Timer.scheduledTimer(
+            withTimeInterval: Self.emergencyHoldDuration,
+            repeats: false
+        ) { [weak self] _ in
+            guard let self else { return }
+            self.emergencyHoldTimer = nil
+            self.onEmergencyShortcutHeld?()
+        }
+    }
+
+    private func cancelEmergencyHold() {
+        emergencyHoldTimer?.invalidate()
+        emergencyHoldTimer = nil
     }
 
     // MARK: - Mouse event filtering
@@ -195,9 +272,9 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     }
 
     private func isPointInInteractiveArea(_ point: CGPoint) -> Bool {
-        rectsLock.lock()
+        stateLock.lock()
         let rects = interactiveRectsCG
-        rectsLock.unlock()
+        stateLock.unlock()
         return rects.contains { $0.contains(point) }
     }
 

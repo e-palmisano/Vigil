@@ -16,6 +16,11 @@ protocol DisplayManagerServiceProtocol: AnyObject {
     func createOverlayWindows(style: OverlayStyle, mode: LockMode, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void)
     func removeAllOverlayWindows()
     func updateStyle(_ style: OverlayStyle)
-    func createBadgeWindow(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void)
+    func createBadgeWindow(position: BadgePosition, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void)
     func removeBadgeWindow()
+
+    /// While the system authentication prompt is up, Vigil's windows are
+    /// dropped below it (instead of being torn down) so the screen stays
+    /// covered and clicks outside the prompt keep being swallowed.
+    func setAuthenticationMode(_ active: Bool)
 }

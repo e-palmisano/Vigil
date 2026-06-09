@@ -40,14 +40,20 @@ final class DisplayManagerServiceTests: XCTestCase {
 
     func testCreateBadgeWindowSetsFlag() {
         let svc = MockDisplayManagerService()
-        svc.createBadgeWindow(isTouchIDAvailable: true, onUnlock: {})
+        svc.createBadgeWindow(position: .bottomRight, isTouchIDAvailable: true, onUnlock: {})
         XCTAssertTrue(svc.hasBadgeWindow)
         XCTAssertEqual(svc.createBadgeCallCount, 1)
     }
 
+    func testCreateBadgeWindowRecordsPosition() {
+        let svc = MockDisplayManagerService()
+        svc.createBadgeWindow(position: .center, isTouchIDAvailable: false, onUnlock: {})
+        XCTAssertEqual(svc.lastBadgePosition, .center)
+    }
+
     func testRemoveBadgeWindowClearsFlag() {
         let svc = MockDisplayManagerService()
-        svc.createBadgeWindow(isTouchIDAvailable: true, onUnlock: {})
+        svc.createBadgeWindow(position: .bottomRight, isTouchIDAvailable: true, onUnlock: {})
         svc.removeBadgeWindow()
         XCTAssertFalse(svc.hasBadgeWindow)
         XCTAssertEqual(svc.removeBadgeCallCount, 1)
@@ -55,8 +61,18 @@ final class DisplayManagerServiceTests: XCTestCase {
 
     func testRemoveAllOverlayWindowsAlsoRemovesBadge() {
         let svc = MockDisplayManagerService()
-        svc.createBadgeWindow(isTouchIDAvailable: false, onUnlock: {})
+        svc.createBadgeWindow(position: .bottomRight, isTouchIDAvailable: false, onUnlock: {})
         svc.removeAllOverlayWindows()
         XCTAssertFalse(svc.hasBadgeWindow)
+    }
+
+    func testAuthenticationModeRecordedAndClearedOnRemove() {
+        let svc = MockDisplayManagerService()
+        svc.createOverlayWindows(style: .darkDimmed, mode: .obscured, isTouchIDAvailable: false, onUnlock: {})
+        svc.setAuthenticationMode(true)
+        XCTAssertTrue(svc.authenticationModeActive)
+        svc.removeAllOverlayWindows()
+        XCTAssertFalse(svc.authenticationModeActive)
+        XCTAssertEqual(svc.authenticationModeChanges, [true])
     }
 }

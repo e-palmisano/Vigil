@@ -11,9 +11,12 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
     var removeBadgeCallCount: Int = 0
     var lastStyle: OverlayStyle?
     var lastMode: LockMode?
+    var lastBadgePosition: BadgePosition?
     var capturedOnUnlock: (() -> Void)?
     var lastIsTouchIDAvailable: Bool?
     var capturedBadgeOnUnlock: (() -> Void)?
+    var authenticationModeActive: Bool = false
+    var authenticationModeChanges: [Bool] = []
 
     var onInteractiveFramesChanged: (([CGRect]) -> Void)?
     /// Frames the mock reports when windows are "shown".
@@ -37,6 +40,7 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
         removeCallCount += 1
         hasOverlays = false
         hasBadgeWindow = false
+        authenticationModeActive = false
         onInteractiveFramesChanged?(interactiveFrames)
     }
 
@@ -44,8 +48,9 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
         lastStyle = style
     }
 
-    func createBadgeWindow(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
+    func createBadgeWindow(position: BadgePosition, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
         createBadgeCallCount += 1
+        lastBadgePosition = position
         lastIsTouchIDAvailable = isTouchIDAvailable
         capturedBadgeOnUnlock = onUnlock
         hasBadgeWindow = true
@@ -55,5 +60,10 @@ final class MockDisplayManagerService: DisplayManagerServiceProtocol {
     func removeBadgeWindow() {
         removeBadgeCallCount += 1
         hasBadgeWindow = false
+    }
+
+    func setAuthenticationMode(_ active: Bool) {
+        authenticationModeActive = active
+        authenticationModeChanges.append(active)
     }
 }

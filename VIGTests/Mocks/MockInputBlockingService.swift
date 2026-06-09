@@ -6,11 +6,13 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
     var isBlocking: Bool = false
     var onEventTapDisabled: (() -> Void)?
     var onUnlockShortcutPressed: (() -> Void)?
+    var onEmergencyShortcutHeld: (() -> Void)?
     var shouldThrow: Error?
     var startCallCount: Int = 0
     var stopCallCount: Int = 0
     var permissionGranted: Bool = true
     var storedShortcut: String?
+    var storedEmergencyShortcut: String?
 
     var lastBlockingMode: LockMode?
 
@@ -36,6 +38,10 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
         storedShortcut = shortcutString
     }
 
+    func setEmergencyShortcut(_ shortcutString: String?) {
+        storedEmergencyShortcut = shortcutString
+    }
+
     func setInteractiveRects(_ rects: [CGRect]) {
         setInteractiveRectsCallCount += 1
         interactiveRects = rects
@@ -47,5 +53,9 @@ final class MockInputBlockingService: InputBlockingServiceProtocol {
 
     func simulateUnlockShortcut() {
         onUnlockShortcutPressed?()
+    }
+
+    func simulateEmergencyShortcutHeld() {
+        onEmergencyShortcutHeld?()
     }
 }

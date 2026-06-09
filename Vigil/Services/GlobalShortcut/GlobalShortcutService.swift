@@ -5,6 +5,7 @@ import AppKit
 @MainActor
 final class GlobalShortcutService {
     private var monitors: [Any] = []
+    private var holdTimer: Timer?
     private let settings: AppSettings
 
     init(settings: AppSettings = .shared) {
@@ -33,33 +34,44 @@ final class GlobalShortcutService {
             if let monitor { monitors.append(monitor) }
         }
 
-        // Emergency unlock — 3-second hold required
+        // Emergency unlock — 3-second hold required. This monitor only works
+        // while the event tap is NOT blocking (monitors never see eaten
+        // events); the locked-state path lives in InputBlockingService.
         if let emergency = ParsedShortcut(settings.emergencyShortcut) {
             setupEmergencyHold(parsed: emergency, handler: onEmergencyUnlock)
         }
     }
 
     private func setupEmergencyHold(parsed: ParsedShortcut, handler: @escaping () -> Void) {
-        var holdTimer: Timer?
-
-        let down = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
-            if parsed.matches(event) {
-                holdTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
-                    DispatchQueue.main.async { handler() }
-                }
-            }
+        let down = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            // Autorepeat would otherwise re-arm a fresh timer every ~80ms,
+            // leaking the previous ones.
+            guard parsed.matches(event), !event.isARepeat else { return }
+            Task { @MainActor [weak self] in self?.startHold(handler) }
         }
         if let down { monitors.append(down) }
 
         // Cancel hold on any key-up or modifier change
-        let up = NSEvent.addGlobalMonitorForEvents(matching: [.keyUp, .flagsChanged]) { _ in
-            holdTimer?.invalidate()
-            holdTimer = nil
+        let up = NSEvent.addGlobalMonitorForEvents(matching: [.keyUp, .flagsChanged]) { [weak self] _ in
+            Task { @MainActor [weak self] in self?.cancelHold() }
         }
         if let up { monitors.append(up) }
     }
 
+    private func startHold(_ handler: @escaping () -> Void) {
+        cancelHold()
+        holdTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { _ in
+            DispatchQueue.main.async { handler() }
+        }
+    }
+
+    private func cancelHold() {
+        holdTimer?.invalidate()
+        holdTimer = nil
+    }
+
     func unregister() {
+        cancelHold()
         monitors.forEach { NSEvent.removeMonitor($0) }
         monitors.removeAll()
     }

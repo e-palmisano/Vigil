@@ -1,6 +1,12 @@
 import AppKit
 import SwiftUI
 
+extension NSWindow.Level {
+    /// One step above the screen saver level — covers everything, including
+    /// full-screen apps and the Dock.
+    static let vigilLock = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.screenSaverWindow)) + 1)
+}
+
 final class OverlayWindow: NSPanel {
 
     override var canBecomeKey: Bool { true }
@@ -20,7 +26,7 @@ final class OverlayWindow: NSPanel {
     }
 
     private func configure() {
-        level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.screenSaverWindow)) + 1)
+        level = .vigilLock
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         isMovable = false
         isMovableByWindowBackground = false
@@ -42,9 +48,5 @@ final class OverlayWindow: NSPanel {
         blocker.addSubview(hosting)
 
         contentView = blocker
-    }
-
-    func updateForScreen() {
-        setFrame(targetScreen.frame, display: false)
     }
 }

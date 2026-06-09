@@ -187,13 +187,16 @@ final class LockManagerTests: XCTestCase {
     }
 
     @MainActor
-    func testObscuredUnlockSuspendsOverlayAndInputBeforeSystemAuthentication() async throws {
+    func testObscuredUnlockStopsTapButKeepsOverlaysBelowSystemAuthentication() async throws {
         try await sut.lock(mode: .obscured)
         authService.authResult = true
         authService.onAuthenticate = { [weak self] in
             guard let self else { return }
+            // The tap must stop so the prompt receives the password, but the
+            // overlays stay up (below the prompt) so the screen stays covered.
             XCTAssertFalse(self.inputService.isBlocking)
-            XCTAssertFalse(self.displayService.hasOverlays)
+            XCTAssertTrue(self.displayService.hasOverlays)
+            XCTAssertTrue(self.displayService.authenticationModeActive)
         }
 
         await sut.unlock()
@@ -213,7 +216,91 @@ final class LockManagerTests: XCTestCase {
         XCTAssertEqual(sut.state, .lockedObscured)
         XCTAssertTrue(inputService.isBlocking)
         XCTAssertTrue(displayService.hasOverlays)
+        XCTAssertFalse(displayService.authenticationModeActive)
         XCTAssertEqual(inputService.startCallCount, 2)
-        XCTAssertEqual(displayService.createCallCount, 2)
+        // Overlays are never torn down during auth — only re-leveled.
+        XCTAssertEqual(displayService.createCallCount, 1)
+    }
+
+    @MainActor
+    func testRestoreLockFailureUnlocksFullyInsteadOfHalfLocked() async throws {
+        try await sut.lock(mode: .obscured)
+        authService.authResult = false
+        inputService.shouldThrow = InputBlockingError.eventTapCreationFailed
+
+        await sut.unlock()
+
+        // Re-arming the tap failed: everything must be torn down, the sleep
+        // assertion released, and the error surfaced transiently.
+        XCTAssertEqual(sut.state, .error("eventTapCreationFailed"))
+        XCTAssertFalse(displayService.hasOverlays)
+        XCTAssertEqual(sleepService.allowCallCount, 1)
+
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        XCTAssertEqual(sut.state, .unlocked)
+    }
+
+    @MainActor
+    func testEmergencyShortcutHeldCallbackUnlocksWithoutAuthentication() async throws {
+        try await sut.lock(mode: .obscured)
+        authService.authResult = false
+
+        inputService.simulateEmergencyShortcutHeld()
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        XCTAssertEqual(sut.state, .unlocked)
+        XCTAssertEqual(authService.callCount, 0)
+        XCTAssertFalse(inputService.isBlocking)
+    }
+
+    @MainActor
+    func testLockVisiblePassesConfiguredBadgePosition() async throws {
+        let settings = AppSettings()
+        settings.badgePosition = BadgePosition.topLeft.rawValue
+        defer { settings.badgePosition = BadgePosition.bottomRight.rawValue }
+        let manager = LockManager(
+            inputBlockingService: MockInputBlockingService(),
+            displayManagerService: displayService,
+            authenticationService: authService,
+            sleepPreventionService: MockSleepPreventionService(),
+            settings: settings
+        )
+
+        try await manager.lock(mode: .visible)
+
+        XCTAssertEqual(displayService.lastBadgePosition, .topLeft)
+        manager.emergencyUnlock()
+    }
+
+    @MainActor
+    func testChangingOverlayStyleWhileLockedUpdatesOverlays() async throws {
+        let settings = AppSettings()
+        settings.overlayStyle = OverlayStyle.darkDimmed.rawValue
+        let manager = LockManager(
+            inputBlockingService: MockInputBlockingService(),
+            displayManagerService: displayService,
+            authenticationService: authService,
+            sleepPreventionService: MockSleepPreventionService(),
+            settings: settings
+        )
+        try await manager.lock(mode: .obscured)
+
+        settings.overlayStyle = OverlayStyle.minimalBlack.rawValue
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        XCTAssertEqual(displayService.lastStyle, .minimalBlack)
+        manager.emergencyUnlock()
+    }
+
+    @MainActor
+    func testEventTapDisabledTearsDownPresentation() async throws {
+        try await sut.lock(mode: .obscured)
+
+        inputService.simulateEventTapDisabled()
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        // Input is no longer blocked, so the overlays must not fake a lock.
+        XCTAssertFalse(displayService.hasOverlays)
+        XCTAssertEqual(sleepService.allowCallCount, 1)
     }
 }

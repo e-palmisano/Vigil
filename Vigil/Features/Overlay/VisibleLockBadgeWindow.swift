@@ -3,11 +3,12 @@ import SwiftUI
 
 final class VisibleLockBadgeWindow: NSPanel {
 
-    private static let badgeSize = CGSize(width: 260, height: 96)
-    private static let margin: CGFloat = 16
+    static let badgeSize = CGSize(width: 260, height: 96)
+    static let margin: CGFloat = 16
 
-    init(isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
-        let frame = Self.frameForMainScreen()
+    init(position: BadgePosition, isTouchIDAvailable: Bool, onUnlock: @escaping () -> Void) {
+        let screen = NSScreen.main ?? NSScreen.screens[0]
+        let frame = Self.frame(for: position, in: screen.visibleFrame)
         super.init(
             contentRect: frame,
             styleMask: [.borderless, .nonactivatingPanel],
@@ -20,7 +21,7 @@ final class VisibleLockBadgeWindow: NSPanel {
     }
 
     private func configure() {
-        level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.screenSaverWindow)) + 1)
+        level = .vigilLock
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         isMovable = false
         isMovableByWindowBackground = false
@@ -31,12 +32,26 @@ final class VisibleLockBadgeWindow: NSPanel {
         hasShadow = true
     }
 
-    private static func frameForMainScreen() -> CGRect {
-        let screen = NSScreen.main ?? NSScreen.screens[0]
-        let origin = CGPoint(
-            x: screen.visibleFrame.maxX - badgeSize.width - margin,
-            y: screen.visibleFrame.minY + margin
-        )
-        return CGRect(origin: origin, size: badgeSize)
+    /// Badge frame in Cocoa global coordinates (origin bottom-left, y up).
+    static func frame(
+        for position: BadgePosition,
+        in visibleFrame: CGRect,
+        size: CGSize = VisibleLockBadgeWindow.badgeSize,
+        margin: CGFloat = VisibleLockBadgeWindow.margin
+    ) -> CGRect {
+        let origin: CGPoint
+        switch position {
+        case .bottomRight:
+            origin = CGPoint(x: visibleFrame.maxX - size.width - margin, y: visibleFrame.minY + margin)
+        case .bottomLeft:
+            origin = CGPoint(x: visibleFrame.minX + margin, y: visibleFrame.minY + margin)
+        case .topRight:
+            origin = CGPoint(x: visibleFrame.maxX - size.width - margin, y: visibleFrame.maxY - size.height - margin)
+        case .topLeft:
+            origin = CGPoint(x: visibleFrame.minX + margin, y: visibleFrame.maxY - size.height - margin)
+        case .center:
+            origin = CGPoint(x: visibleFrame.midX - size.width / 2, y: visibleFrame.midY - size.height / 2)
+        }
+        return CGRect(origin: origin, size: size)
     }
 }

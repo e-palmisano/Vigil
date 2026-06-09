@@ -57,6 +57,9 @@ final class AppState: ObservableObject {
             onEmergencyUnlock: { [weak self] in self?.lockManager.emergencyUnlock() }
         )
         inputBlockingService.setUnlockShortcut(settings.globalShortcutUnlock)
+        // Detected inside the event tap: the NSEvent monitor registered above
+        // never sees the emergency combo while input is being blocked.
+        inputBlockingService.setEmergencyShortcut(settings.emergencyShortcut)
     }
 
     func lockVisible() {
