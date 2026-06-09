@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct BlueGradientBackground: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @AppStorage("respectReducedMotion") private var respectReducedMotion: Bool = true
     @State private var animating = false
+
+    private var reduceMotion: Bool { systemReduceMotion && respectReducedMotion }
 
     var body: some View {
         LinearGradient(

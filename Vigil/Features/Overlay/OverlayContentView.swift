@@ -8,8 +8,14 @@ struct OverlayContentView: View {
 
     @State private var chromeVisible: Bool = true
     @State private var idleTimer: Timer?
+    @AppStorage("showClock") private var showClock: Bool = true
+    @AppStorage("showLockMessage") private var showLockMessage: Bool = true
+    @AppStorage("autoHideChrome") private var autoHideChrome: Bool = true
     @AppStorage("autoHideDelay") private var autoHideDelay: Double = 5.0
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @AppStorage("respectReducedMotion") private var respectReducedMotion: Bool = true
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+
+    private var reduceMotion: Bool { systemReduceMotion && respectReducedMotion }
 
     var body: some View {
         ZStack {
@@ -19,11 +25,15 @@ struct OverlayContentView: View {
             VStack(spacing: 32) {
                 Spacer()
 
-                LockBadgeView()
-                    .opacity(chromeVisible ? 1 : 0)
-                    .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
+                if showLockMessage {
+                    LockBadgeView()
+                        .opacity(chromeVisible ? 1 : 0)
+                        .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: chromeVisible)
+                }
 
-                ClockView()
+                if showClock {
+                    ClockView()
+                }
 
                 Spacer()
 
@@ -63,6 +73,7 @@ struct OverlayContentView: View {
 
     private func scheduleHide() {
         idleTimer?.invalidate()
+        guard autoHideChrome else { return }
         idleTimer = Timer.scheduledTimer(withTimeInterval: autoHideDelay, repeats: false) { _ in
             withAnimation(reduceMotion ? nil : .easeOut(duration: 0.5)) {
                 chromeVisible = false

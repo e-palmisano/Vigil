@@ -45,10 +45,9 @@ private struct GeneralSettingsView: View {
 
             Section("Visible Lock") {
                 Picker("Badge Position", selection: $settings.badgePosition) {
-                    Text("Bottom Right").tag(BadgePosition.bottomRight.rawValue)
-                    Text("Bottom Left").tag(BadgePosition.bottomLeft.rawValue)
-                    Text("Top Right").tag(BadgePosition.topRight.rawValue)
-                    Text("Top Left").tag(BadgePosition.topLeft.rawValue)
+                    ForEach(BadgePosition.allCases, id: \.rawValue) { position in
+                        Text(position.displayName).tag(position.rawValue)
+                    }
                 }
             }
         }
