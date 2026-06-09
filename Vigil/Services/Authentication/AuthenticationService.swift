@@ -10,42 +10,30 @@ final class AuthenticationService: AuthenticationServiceProtocol {
     }
 
     func authenticateBiometricsOnly(reason: String) async throws -> Bool {
-        let context = LAContext()
-        do {
-            let result = try await context.evaluatePolicy(
-                .deviceOwnerAuthenticationWithBiometrics,
-                localizedReason: reason
-            )
-            return result
-        } catch let error as LAError {
-            switch error.code {
-            case .userCancel, .appCancel, .systemCancel:
-                throw AuthenticationError.cancelled
-            case .biometryNotAvailable, .biometryNotEnrolled:
-                throw AuthenticationError.notAvailable
-            default:
-                throw AuthenticationError.failed(error.localizedDescription)
-            }
-        }
+        try await evaluate(.deviceOwnerAuthenticationWithBiometrics, reason: reason)
     }
 
     func authenticate(reason: String) async throws -> Bool {
+        try await evaluate(.deviceOwnerAuthentication, reason: reason)
+    }
+
+    private func evaluate(_ policy: LAPolicy, reason: String) async throws -> Bool {
         let context = LAContext()
         do {
-            let result = try await context.evaluatePolicy(
-                .deviceOwnerAuthentication,
-                localizedReason: reason
-            )
-            return result
+            return try await context.evaluatePolicy(policy, localizedReason: reason)
         } catch let error as LAError {
-            switch error.code {
-            case .userCancel, .appCancel, .systemCancel:
-                throw AuthenticationError.cancelled
-            case .biometryNotAvailable, .biometryNotEnrolled:
-                throw AuthenticationError.notAvailable
-            default:
-                throw AuthenticationError.failed(error.localizedDescription)
-            }
+            throw Self.mapped(error)
+        }
+    }
+
+    private static func mapped(_ error: LAError) -> AuthenticationError {
+        switch error.code {
+        case .userCancel, .appCancel, .systemCancel:
+            return .cancelled
+        case .biometryNotAvailable, .biometryNotEnrolled:
+            return .notAvailable
+        default:
+            return .failed(error.localizedDescription)
         }
     }
 }
