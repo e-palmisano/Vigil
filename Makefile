@@ -16,7 +16,8 @@ archive:
 		-project Vigil.xcodeproj \
 		-scheme $(SCHEME) \
 		-configuration Release \
-		-archivePath $(ARCHIVE_PATH)
+		-archivePath $(ARCHIVE_PATH) \
+		DEVELOPMENT_TEAM=$(DEVELOPMENT_TEAM)
 
 export: archive
 	xcodebuild -exportArchive \

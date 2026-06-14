@@ -1,6 +1,6 @@
 name: Vigil
 options:
-  bundleIdPrefix: com.yourname
+  bundleIdPrefix: com.palmi
   deploymentTarget:
     macOS: "15.2"
   createIntermediateGroups: true
@@ -9,8 +9,8 @@ settings:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "15.2"
     ENABLE_HARDENED_RUNTIME: YES
-    CODE_SIGN_IDENTITY: "-"
-    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "Developer ID Application"
+    CODE_SIGN_STYLE: Automatic
 targets:
   Vigil:
     type: application
@@ -22,7 +22,7 @@ targets:
       - path: Vigil/Resources/Assets.xcassets
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.vigil
+        PRODUCT_BUNDLE_IDENTIFIER: com.palmi.vigil
         PRODUCT_NAME: Vigil
         INFOPLIST_FILE: Vigil/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: Vigil/Resources/Vigil.entitlements
@@ -37,5 +37,5 @@ targets:
       - target: Vigil
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.yourname.vigtests
+        PRODUCT_BUNDLE_IDENTIFIER: com.palmi.vigtests
         GENERATE_INFOPLIST_FILE: YES
