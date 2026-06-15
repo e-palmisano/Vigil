@@ -44,6 +44,9 @@ jobs:
       - name: Export
         run: make export
 
+      - name: Install create-dmg
+        run: brew install create-dmg
+
       - name: Build DMG
         run: |
           VERSION=${GITHUB_REF_NAME#v}
