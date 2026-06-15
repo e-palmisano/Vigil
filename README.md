@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/macOS-15.2%2B-blue?style=flat-square" alt="macOS 26+" />
+  <img src="https://img.shields.io/badge/macOS-26%2B-blue?style=flat-square" alt="macOS 26+" />
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="MIT license" />
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat-square" alt="Swift 6.0" />
   <img src="https://img.shields.io/github/v/release/e-palmisano/vigil?style=flat-square&color=green" alt="Latest release" />
