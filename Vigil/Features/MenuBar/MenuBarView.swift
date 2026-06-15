@@ -62,6 +62,9 @@ struct MenuBarView: View {
 
     private var appActionsSection: some View {
         VStack(alignment: .leading, spacing: 2) {
+            menuButton(title: "Check for Updates…", icon: "arrow.triangle.2.circlepath", shortcut: "", disabled: false) {
+                appState.checkForUpdates()
+            }
             menuButton(title: "Settings…", icon: "gear", shortcut: "⌘,", disabled: false) {
                 openSettings()
             }

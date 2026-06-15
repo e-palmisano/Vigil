@@ -10,6 +10,7 @@ final class AppState: ObservableObject {
     let lockManager: LockManager
     let settings: AppSettings
     let shortcutService: GlobalShortcutService
+    let updaterService: UpdateCheckerService
 
     private let inputBlockingService: InputBlockingServiceProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -32,6 +33,7 @@ final class AppState: ObservableObject {
         )
 
         self.shortcutService = GlobalShortcutService(settings: settings)
+        self.updaterService = UpdateCheckerService()
 
         lockManager.$state
             .receive(on: RunLoop.main)
@@ -42,6 +44,9 @@ final class AppState: ObservableObject {
 
         reregisterShortcuts()
         recoverLockStateIfNeeded()
+        if settings.checkForUpdatesAtLaunch {
+            updaterService.startPeriodicChecks()
+        }
     }
 
     private func recoverLockStateIfNeeded() {
@@ -69,6 +74,10 @@ final class AppState: ObservableObject {
 
     func unlock() {
         Task { await lockManager.unlock() }
+    }
+
+    func checkForUpdates() {
+        updaterService.checkNow()
     }
 
     var isLocked: Bool { lockState.isLocked }

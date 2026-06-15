@@ -19,6 +19,7 @@ final class AppSettings: ObservableObject {
     @AppStorage("badgePosition") var badgePosition: String = BadgePosition.bottomRight.rawValue
     @AppStorage("wasLockedOnExit") var wasLockedOnExit: Bool = false
     @AppStorage("lockModeOnExit") var lockModeOnExit: String = LockMode.obscured.rawValue
+    @AppStorage("checkForUpdatesAtLaunch") var checkForUpdatesAtLaunch: Bool = true
 
     var lockMode: LockMode {
         LockMode(rawValue: defaultLockMode) ?? .obscured

@@ -22,6 +22,7 @@ struct SettingsView: View {
 // MARK: - General
 
 private struct GeneralSettingsView: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var settings: AppSettings
 
     var body: some View {
@@ -40,6 +41,13 @@ private struct GeneralSettingsView: View {
                 Picker("Default Lock Mode", selection: $settings.defaultLockMode) {
                     Text("Visible — screen stays visible").tag(LockMode.visible.rawValue)
                     Text("Obscured — covers all displays").tag(LockMode.obscured.rawValue)
+                }
+            }
+
+            Section("Updates") {
+                Toggle("Check for Updates at Launch", isOn: $settings.checkForUpdatesAtLaunch)
+                Button("Check Now") {
+                    appState.checkForUpdates()
                 }
             }
 

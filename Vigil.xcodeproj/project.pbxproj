@@ -61,6 +61,7 @@
 		DEB4EB8F6A0F5BFEE38B4871 /* InputBlockingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A75DEDE1D82ECA4000D94E /* InputBlockingServiceTests.swift */; };
 		E8B6B71FB048B8CAFDD0B2C6 /* GraphiteGradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5459B50B1CC3253CD69EC6 /* GraphiteGradientBackground.swift */; };
 		E8BE82E0FD40D8742439931B /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC27845C5998D5B2380A107 /* SettingsViewTests.swift */; };
+		F180BC4B47DF8D0A7C88FF38 /* UpdateCheckerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB48ACB88E11117F23B03C1 /* UpdateCheckerService.swift */; };
 		F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF769E1CA500EF65DB42AD8 /* SleepPreventionService.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,6 +126,7 @@
 		E71B9AD9F24C08DBCAF36272 /* MockDisplayManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDisplayManagerService.swift; sourceTree = "<group>"; };
 		EAF0236FC996BD9F14F9C653 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		ECF449331A6C02029567B661 /* LockUnlockIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockUnlockIntegrationTests.swift; sourceTree = "<group>"; };
+		EEB48ACB88E11117F23B03C1 /* UpdateCheckerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCheckerService.swift; sourceTree = "<group>"; };
 		F21D2DEF2214C0236DE61D64 /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		F27437EC8E503A96A45CE89B /* InputBlockingServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingServiceProtocol.swift; sourceTree = "<group>"; };
 		F53369881300B79D5865BBEE /* VIGTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIGTests.swift; sourceTree = "<group>"; };
@@ -276,6 +278,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B019F2F3CDDA3B727D5D164D /* UpdateChecker */ = {
+			isa = PBXGroup;
+			children = (
+				EEB48ACB88E11117F23B03C1 /* UpdateCheckerService.swift */,
+			);
+			path = UpdateChecker;
+			sourceTree = "<group>";
+		};
 		B668B880068B57EF2BB3009D /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,6 +360,7 @@
 				950EF132B6196A0A7FC1BA63 /* GlobalShortcut */,
 				47C3AC6150A6F96DB2279671 /* InputBlocking */,
 				81ED5F54E59304974B3AAD30 /* SleepPrevention */,
+				B019F2F3CDDA3B727D5D164D /* UpdateChecker */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -496,6 +507,7 @@
 				F80444751D34BEEC6F3DD8B5 /* SleepPreventionService.swift in Sources */,
 				9E8F1FEF84EC16C2DC76CB60 /* SleepPreventionServiceProtocol.swift in Sources */,
 				CF4D7B488B809603E495B9FD /* UnlockButton.swift in Sources */,
+				F180BC4B47DF8D0A7C88FF38 /* UpdateCheckerService.swift in Sources */,
 				3770D1AC9654140557D80FBE /* VIGApp.swift in Sources */,
 				79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */,
 				7C4DFFCC4F5EFA7C88BEC85C /* VisibleLockBadgeWindow.swift in Sources */,
@@ -549,7 +561,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.vigtests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmi.vigtests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vigil.app/Contents/MacOS/Vigil";
 			};
@@ -588,7 +600,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -633,7 +645,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.vigtests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmi.vigtests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Vigil.app/Contents/MacOS/Vigil";
 			};
@@ -651,7 +663,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.vigil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmi.vigil;
 				PRODUCT_NAME = Vigil;
 				SDKROOT = macosx;
 			};
@@ -669,7 +681,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourname.vigil;
+				PRODUCT_BUNDLE_IDENTIFIER = com.palmi.vigil;
 				PRODUCT_NAME = Vigil;
 				SDKROOT = macosx;
 			};
@@ -708,7 +720,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
