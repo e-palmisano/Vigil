@@ -19,7 +19,7 @@ archive:
 		-archivePath $(ARCHIVE_PATH) \
 		DEVELOPMENT_TEAM=$(DEVELOPMENT_TEAM)
 
-export: archive
+export:
 	xcodebuild -exportArchive \
 		-archivePath $(ARCHIVE_PATH) \
 		-exportPath $(EXPORT_PATH) \
