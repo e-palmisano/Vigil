@@ -37,7 +37,7 @@ jobs:
       - name: Archive
         run: make archive
         env:
-          DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
+          DEVELOPMENT_TEAM: ${{ secrets.TEAM_ID }}
 
       - name: Export
         run: make export
