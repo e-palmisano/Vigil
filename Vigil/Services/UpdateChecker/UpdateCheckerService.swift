@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import Security
 
 @MainActor
 final class UpdateCheckerService {
@@ -130,21 +131,32 @@ final class UpdateCheckerService {
         let plist = try await runProcess("/usr/bin/hdiutil", ["attach", dmgPath, "-nobrowse", "-plist", "-quiet"])
         let mountPoint = try parseMountPoint(from: plist)
 
-        defer {
-            Task { try? await runProcess("/usr/bin/hdiutil", ["detach", mountPoint, "-quiet"]) }
-        }
-
         let sourceApp = URL(filePath: "\(mountPoint)/Vigil.app")
         let destApp = Bundle.main.bundleURL
         let fm = FileManager.default
-        guard fm.fileExists(atPath: sourceApp.path) else { throw UpdateError.appNotFound }
 
-        let tmpApp = destApp.deletingLastPathComponent().appendingPathComponent(".Vigil-update.app")
-        if fm.fileExists(atPath: tmpApp.path) { try fm.removeItem(at: tmpApp) }
-        try fm.copyItem(at: sourceApp, to: tmpApp)
-        _ = try fm.replaceItemAt(destApp, withItemAt: tmpApp)
+        do {
+            guard fm.fileExists(atPath: sourceApp.path) else { throw UpdateError.appNotFound }
+
+            // Never replace the running binary with an unverified download. Require
+            // a valid code signature from the same Team ID as the installed app.
+            try Self.verifyCodeSignature(at: sourceApp)
+
+            let tmpApp = destApp.deletingLastPathComponent().appendingPathComponent(".Vigil-update.app")
+            if fm.fileExists(atPath: tmpApp.path) { try fm.removeItem(at: tmpApp) }
+            try fm.copyItem(at: sourceApp, to: tmpApp)
+            _ = try fm.replaceItemAt(destApp, withItemAt: tmpApp)
+        } catch {
+            // Always unmount before surfacing the failure.
+            _ = try? await runProcess("/usr/bin/hdiutil", ["detach", mountPoint, "-quiet"])
+            throw error
+        }
 
         hideProgressPanel()
+
+        // Unmount before relaunching. A fire-and-forget detach would never run —
+        // NSApp.terminate kills the process before the task could be scheduled.
+        _ = try? await runProcess("/usr/bin/hdiutil", ["detach", mountPoint, "-quiet"])
 
         let task = Process()
         task.executableURL = URL(filePath: "/usr/bin/open")
@@ -214,6 +226,48 @@ final class UpdateCheckerService {
         }
     }
 
+    // MARK: - Signature verification
+
+    /// Validates the downloaded app's code signature and requires it to carry
+    /// the same Team ID as the currently running app. Throws if the running
+    /// team can't be determined (fail closed) or the download doesn't match.
+    private static func verifyCodeSignature(at appURL: URL) throws {
+        guard let expectedTeam = teamIdentifier(ofAppAt: Bundle.main.bundleURL) else {
+            throw UpdateError.signatureInvalid
+        }
+
+        var staticCode: SecStaticCode?
+        guard SecStaticCodeCreateWithPath(appURL as CFURL, [], &staticCode) == errSecSuccess,
+              let staticCode else {
+            throw UpdateError.signatureInvalid
+        }
+
+        let requirementText = "anchor apple generic and certificate leaf[subject.OU] = \"\(expectedTeam)\"" as CFString
+        var requirement: SecRequirement?
+        guard SecRequirementCreateWithString(requirementText, [], &requirement) == errSecSuccess,
+              let requirement else {
+            throw UpdateError.signatureInvalid
+        }
+
+        // Validates the full signature (sealed resources + cdhash) and that it
+        // satisfies the requirement in one call.
+        guard SecStaticCodeCheckValidity(staticCode, [], requirement) == errSecSuccess else {
+            throw UpdateError.signatureInvalid
+        }
+    }
+
+    private static func teamIdentifier(ofAppAt url: URL) -> String? {
+        var staticCode: SecStaticCode?
+        guard SecStaticCodeCreateWithPath(url as CFURL, [], &staticCode) == errSecSuccess,
+              let staticCode else { return nil }
+
+        var info: CFDictionary?
+        guard SecCodeCopySigningInformation(staticCode, SecCSFlags(rawValue: kSecCSSigningInformation), &info) == errSecSuccess,
+              let dict = info as? [String: Any] else { return nil }
+
+        return dict[kSecCodeInfoTeamIdentifier as String] as? String
+    }
+
     private func parseMountPoint(from plistXML: String) throws -> String {
         guard let data = plistXML.data(using: .utf8),
               let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
@@ -267,4 +321,5 @@ private enum UpdateError: Error {
     case processFailed(Int32)
     case mountFailed
     case appNotFound
+    case signatureInvalid
 }
