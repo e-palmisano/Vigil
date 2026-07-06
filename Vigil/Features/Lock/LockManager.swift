@@ -134,6 +134,11 @@ final class LockManager: ObservableObject {
 
     func handleEventTapDisabled() {
         logger.error("CGEventTap was disabled by the system — input blocking stopped unexpectedly")
+        // The tap is gone, so input already flows. Tear the rest of the lock
+        // down too — otherwise overlays keep covering the screen, the sleep
+        // assertion leaks, and the input service still holds a stale tap that
+        // blocks the next startBlocking.
+        teardownLockResources()
         state = .error("eventTapDisabled")
         postEventTapNotification()
         Task {
@@ -199,13 +204,20 @@ final class LockManager: ObservableObject {
     }
 
     private func performUnlock() {
+        teardownLockResources()
+        state = .unlocked
+    }
+
+    /// Releases every OS resource the lock holds: the input tap, the overlay
+    /// windows, and the sleep assertion. Deliberately does not touch `state`,
+    /// so callers can move to `.unlocked` or `.error` as appropriate.
+    private func teardownLockResources() {
         inputBlockingService.stopBlocking()
         displayManagerService.removeAllOverlayWindows()
         if let id = sleepAssertionID {
             sleepPreventionService.allowSleep(assertionID: id)
             sleepAssertionID = nil
         }
-        state = .unlocked
     }
 
     private func mode(for state: LockState) -> LockMode {

@@ -64,6 +64,23 @@ final class LockUnlockIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.state, .unlocked)
     }
 
+    func test_eventTapDisabled_tearsDownOverlaysAndSleepAssertion() async throws {
+        // When the system disables the tap, Vigil must fully tear down the lock:
+        // stop blocking, remove overlays, release the sleep assertion. Leaving
+        // any of these behind strands the user under a black overlay with input
+        // flowing underneath and a leaked power assertion.
+        try await sut.lock(mode: .obscured)
+        XCTAssertTrue(inputBlocking.isBlocking)
+        XCTAssertTrue(displayManager.hasOverlays)
+
+        inputBlocking.onEventTapDisabled?()
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        XCTAssertFalse(inputBlocking.isBlocking)
+        XCTAssertFalse(displayManager.hasOverlays)
+        XCTAssertEqual(sleepPrevention.allowCallCount, 1)
+    }
+
     func test_emergencyUnlock_recoversFromAnyLockedState() async throws {
         try await sut.lock(mode: .obscured)
         sut.emergencyUnlock()
