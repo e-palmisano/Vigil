@@ -26,7 +26,6 @@
 		56669F2170AB882772BFA5AB /* LockManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B249D2A31C6406D47FC58 /* LockManagerTests.swift */; };
 		58D7692D4E4A2D9120AD13A8 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19943A738D6CFE770F75E12 /* BackgroundView.swift */; };
 		592DCC918A329D69E68A554E /* OverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1D5A3D3DD6802E5D541D0 /* OverlayStyle.swift */; };
-		71BB69AD2C1E04F4D80A908A /* long-term-memory.json in Resources */ = {isa = PBXBuildFile; fileRef = 3C6CFD356CD057A1432CCD2E /* long-term-memory.json */; };
 		71E30E81530C6139211AFF3F /* VIGTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53369881300B79D5865BBEE /* VIGTests.swift */; };
 		769681F195B85477D83301F2 /* BlurredSnapshotBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568191D7F386E5A23319A55 /* BlurredSnapshotBackground.swift */; };
 		79B448B4B1E3C00AB25FF781 /* VisibleLockBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */; };
@@ -85,7 +84,6 @@
 		366227DAA97F9148F20B77D3 /* ShortcutFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutFormatter.swift; sourceTree = "<group>"; };
 		36BAAF83E28B8836AF04BBFA /* UnlockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockButton.swift; sourceTree = "<group>"; };
 		3C54706574D3562B081EE4F6 /* BlueGradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueGradientBackground.swift; sourceTree = "<group>"; };
-		3C6CFD356CD057A1432CCD2E /* long-term-memory.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "long-term-memory.json"; sourceTree = "<group>"; };
 		48D1B22BF5457A4F28E26668 /* InputBlockingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBlockingService.swift; sourceTree = "<group>"; };
 		4A4A304F0167A7FC4B48DB34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DC795D3B25CC84B794D2497 /* VisibleLockBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibleLockBadge.swift; sourceTree = "<group>"; };
@@ -227,14 +225,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		714A71ED876CC4B8CD5FEACA /* agent */ = {
-			isa = PBXGroup;
-			children = (
-				3C6CFD356CD057A1432CCD2E /* long-term-memory.json */,
-			);
-			path = agent;
-			sourceTree = "<group>";
-		};
 		78EBBC1C3CC1D9002C36D3A1 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,14 +241,6 @@
 				FAD535C21F7D4A5F1AC49552 /* SleepPreventionServiceProtocol.swift */,
 			);
 			path = SleepPrevention;
-			sourceTree = "<group>";
-		};
-		8CC3C93A34D3C9C1AD82EBA1 /* .pi */ = {
-			isa = PBXGroup;
-			children = (
-				714A71ED876CC4B8CD5FEACA /* agent */,
-			);
-			path = .pi;
 			sourceTree = "<group>";
 		};
 		950EF132B6196A0A7FC1BA63 /* GlobalShortcut */ = {
@@ -323,7 +305,6 @@
 		D558645DED43326B339E8444 /* Vigil */ = {
 			isa = PBXGroup;
 			children = (
-				8CC3C93A34D3C9C1AD82EBA1 /* .pi */,
 				E13625EA1478DFCAD6D22579 /* App */,
 				1BD63CE8560CDF0EAB970434 /* Features */,
 				4A659D3912540E80695152E7 /* Models */,
@@ -463,7 +444,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CF567297A751098EDC84345 /* Assets.xcassets in Resources */,
-				71BB69AD2C1E04F4D80A908A /* long-term-memory.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

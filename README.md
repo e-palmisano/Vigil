@@ -20,9 +20,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/macOS-26%2B-blue?style=flat-square" alt="macOS 26+" />
+  <img src="https://img.shields.io/badge/macOS-15.2%2B-blue?style=flat-square" alt="macOS 15.2+" />
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="MIT license" />
-  <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat-square" alt="Swift 6.0" />
+  <img src="https://img.shields.io/badge/Swift-5.9-orange?style=flat-square" alt="Swift 5.9" />
   <img src="https://img.shields.io/github/v/release/e-palmisano/vigil?style=flat-square&color=green" alt="Latest release" />
   <a href="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml"><img src="https://github.com/e-palmisano/Vigil/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://github.com/e-palmisano/Vigil"><img src="https://img.shields.io/github/stars/e-palmisano/vigil?style=flat-square&logo=github&label=stars&color=4c71f2" alt="GitHub stars" /></a>
@@ -125,9 +125,9 @@ Bug reports and pull requests are welcome.
    xcodebuild test -project Vigil.xcodeproj -scheme VIGTests -destination 'platform=macOS'
    ```
 
-2. **Respect the architecture.** Services depend on protocols, never concrete types. New services belong in `Vigil/Services/` with a `*Protocol` interface and a mock in `VIGTests/Mocks/`. See [Architecture](#) in `CLAUDE.md` for the full pattern.
+2. **Respect the architecture.** Services depend on protocols, never concrete types. New services belong in `Vigil/Services/` with a `*Protocol` interface and a mock in `VIGTests/Mocks/`.
 
-3. **Coordinate systems.** Any code that touches input positions or window frames must respect the Cocoa ↔ CoreGraphics flip. Read the *Coordinate systems* note in `CLAUDE.md` before touching `InputBlockingService` or `DisplayManagerService`.
+3. **Coordinate systems.** Any code that touches input positions or window frames must respect the Cocoa ↔ CoreGraphics flip. Read the *Coordinate systems* doc comment at the top of `Vigil/Services/InputBlocking/InputBlockingService.swift` before touching `InputBlockingService` or `DisplayManagerService`.
 
 4. **No new dependencies.** Vigil has zero external dependencies by design. Keep it that way.
 

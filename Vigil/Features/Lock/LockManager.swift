@@ -130,7 +130,7 @@ final class LockManager: ObservableObject {
         }
     }
 
-    private let logger = Logger(subsystem: "com.vigil.app", category: "LockManager")
+    private let logger = Logger(subsystem: "com.palmi.vigil", category: "LockManager")
 
     func handleEventTapDisabled() {
         logger.error("CGEventTap was disabled by the system — input blocking stopped unexpectedly")
