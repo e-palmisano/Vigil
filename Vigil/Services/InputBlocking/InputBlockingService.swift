@@ -7,6 +7,7 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     private(set) var isBlocking: Bool = false
     var onEventTapDisabled: (() -> Void)?
     var onUnlockShortcutPressed: (() -> Void)?
+    var onEmergencyUnlockPressed: (() -> Void)?
 
     private var eventTap: CFMachPort?
     private var runLoopSource: CFRunLoopSource?
@@ -15,6 +16,8 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     private var watchdogFailures: Int = 0
     private var retainedSelfPointer: UnsafeMutableRawPointer?
     private var unlockShortcut: ParsedShortcut?
+    private var emergencyShortcut: ParsedShortcut?
+    private var emergencyHoldTimer: Timer?
 
     // Clickable regions in CoreGraphics event coordinates (origin top-left).
     // Read on the tap thread, written on the main thread → guarded by a lock.
@@ -65,6 +68,10 @@ final class InputBlockingService: InputBlockingServiceProtocol {
 
     func setUnlockShortcut(_ shortcutString: String?) {
         unlockShortcut = shortcutString.flatMap { ParsedShortcut($0) }
+    }
+
+    func setEmergencyShortcut(_ shortcutString: String?) {
+        emergencyShortcut = shortcutString.flatMap { ParsedShortcut($0) }
     }
 
     func setInteractiveRects(_ rects: [CGRect]) {
@@ -126,6 +133,23 @@ final class InputBlockingService: InputBlockingServiceProtocol {
                     return nil // eat the event — don't let it reach apps
                 }
 
+                // Detect emergency unlock — must be held for 3s. Handled here,
+                // not via a global NSEvent monitor, because the tap eats the
+                // events before any monitor could see them while blocking.
+                if type == .keyDown,
+                   let shortcut = service.emergencyShortcut,
+                   let nsEvent = NSEvent(cgEvent: event),
+                   shortcut.matches(nsEvent) {
+                    DispatchQueue.main.async { service.startEmergencyHold() }
+                    return nil // eat the event
+                }
+
+                // Any key release or modifier change cancels a pending hold.
+                if type == .keyUp || type == .flagsChanged {
+                    DispatchQueue.main.async { service.cancelEmergencyHold() }
+                    // fall through — the event is still eaten below
+                }
+
                 return nil // eat the event
             },
             userInfo: selfPtr
@@ -158,6 +182,7 @@ final class InputBlockingService: InputBlockingServiceProtocol {
 
     func stopBlocking() {
         stopWatchdog()
+        cancelEmergencyHold()
         if let tap = eventTap {
             CGEvent.tapEnable(tap: tap, enable: false)
         }
@@ -206,6 +231,22 @@ final class InputBlockingService: InputBlockingServiceProtocol {
     private static func primaryDisplayHeight() -> CGFloat {
         let primary = NSScreen.screens.first { $0.frame.origin == .zero } ?? NSScreen.screens.first
         return primary?.frame.height ?? 0
+    }
+
+    // MARK: - Emergency hold
+
+    /// Starts the 3-second hold before the emergency unlock fires. Called on the
+    /// main thread; the timer therefore schedules on the main run loop.
+    private func startEmergencyHold() {
+        emergencyHoldTimer?.invalidate()
+        emergencyHoldTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] _ in
+            self?.onEmergencyUnlockPressed?()
+        }
+    }
+
+    private func cancelEmergencyHold() {
+        emergencyHoldTimer?.invalidate()
+        emergencyHoldTimer = nil
     }
 
     // MARK: - Watchdog

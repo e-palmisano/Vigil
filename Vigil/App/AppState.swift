@@ -58,10 +58,12 @@ final class AppState: ObservableObject {
     func reregisterShortcuts() {
         shortcutService.register(
             onLockVisible: { [weak self] in self?.lockVisible() },
-            onLockObscured: { [weak self] in self?.lockObscured() },
-            onEmergencyUnlock: { [weak self] in self?.lockManager.emergencyUnlock() }
+            onLockObscured: { [weak self] in self?.lockObscured() }
         )
+        // Unlock and emergency shortcuts are handled inside the input tap so
+        // they fire while blocking; a global monitor never sees those events.
         inputBlockingService.setUnlockShortcut(settings.globalShortcutUnlock)
+        inputBlockingService.setEmergencyShortcut(settings.emergencyShortcut)
     }
 
     func lockVisible() {

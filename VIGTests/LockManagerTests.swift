@@ -92,6 +92,19 @@ final class LockManagerTests: XCTestCase {
     }
 
     @MainActor
+    func testEmergencyUnlockCallbackFromInputServiceUnlocks() async throws {
+        // The emergency shortcut is detected inside the input tap while locked,
+        // so a callback from the input service must unlock without authentication.
+        try await sut.lock(mode: .obscured)
+        authService.authResult = false
+        inputService.simulateEmergencyUnlock()
+        try await Task.sleep(nanoseconds: 100_000_000)
+        XCTAssertEqual(sut.state, .unlocked)
+        XCTAssertFalse(inputService.isBlocking)
+        XCTAssertFalse(displayService.hasOverlays)
+    }
+
+    @MainActor
     func testPreventSleepCalledWhenEnabled() async throws {
         try await sut.lock(mode: .visible)
         XCTAssertEqual(sleepService.preventCallCount, 1)

@@ -46,6 +46,10 @@ final class LockManager: ObservableObject {
             Task { @MainActor [weak self] in await self?.unlock() }
         }
 
+        inputBlockingService.onEmergencyUnlockPressed = { [weak self] in
+            Task { @MainActor [weak self] in self?.emergencyUnlock() }
+        }
+
         $state.sink { [weak self] newState in
             self?.persistStateForCrashRecovery(newState)
         }.store(in: &cancellables)
