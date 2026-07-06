@@ -26,6 +26,7 @@ export:
 		-exportOptionsPlist ExportOptions.plist
 
 dmg: export
+	rm -f "$(DMG_PATH)"
 	create-dmg \
 		--volname "Vigil" \
 		--window-pos 200 120 \
